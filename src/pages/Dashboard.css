@@ -1,0 +1,110 @@
+.dashboard {
+  width: 100%;
+}
+
+.dashboard .page-header {
+  margin-bottom: calc(var(--spacing) * 3);
+}
+
+.dashboard .page-header h1 {
+  color: var(--primary);
+}
+
+.page-description {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: calc(var(--spacing) * 2);
+  margin-bottom: calc(var(--spacing) * 4);
+}
+
+.stat-box {
+  background: white;
+  padding: calc(var(--spacing) * 2);
+  border-radius: 4px;
+  border-left: 4px solid var(--primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.stat-name {
+  color: var(--text-secondary);
+  margin-top: var(--spacing);
+  font-weight: 500;
+}
+
+.problems-table-container {
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.problems-table-container h2 {
+  padding: calc(var(--spacing) * 2);
+  border-bottom: 1px solid var(--border-gray);
+  margin: 0;
+}
+
+.problems-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.problems-table thead {
+  background-color: var(--light-gray);
+}
+
+.problems-table th {
+  padding: var(--spacing);
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-gray);
+}
+
+.problems-table td {
+  padding: var(--spacing);
+  border-bottom: 1px solid var(--border-gray);
+  color: var(--text-primary);
+}
+
+.problems-table tbody tr:hover {
+  background-color: var(--light-gray);
+}
+
+.title-cell {
+  font-weight: 500;
+}
+
+.empty-message {
+  padding: calc(var(--spacing) * 3);
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .dashboard-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .problems-table {
+    font-size: 0.875rem;
+  }
+
+  .problems-table th,
+  .problems-table td {
+    padding: calc(var(--spacing) * 0.75);
+  }
+}

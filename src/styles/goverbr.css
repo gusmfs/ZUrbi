@@ -1,0 +1,343 @@
+/* Gov.br Design System Colors */
+:root {
+  --primary: #003366;
+  --primary-dark: #001a4d;
+  --primary-light: #0052CC;
+  --secondary: #00AA44;
+  --neutral-gray: #666666;
+  --light-gray: #F5F5F5;
+  --lighter-gray: #FAFAFA;
+  --border-gray: #DEDEDE;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --error: #E31C23;
+  --success: #008000;
+  --warning: #FFC107;
+  --info: #0052CC;
+  --spacing: 8px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #fff;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* Typography */
+h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing);
+  letter-spacing: -0.5px;
+}
+
+h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: calc(var(--spacing) * 1.5);
+  letter-spacing: -0.25px;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing);
+}
+
+p {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing);
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--primary-light);
+  text-decoration: underline;
+}
+
+/* Buttons */
+.btn {
+  padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 2.5);
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-light);
+  box-shadow: 0 4px 12px rgba(0, 51, 102, 0.25);
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #00934a;
+  box-shadow: 0 4px 12px rgba(0, 170, 68, 0.25);
+}
+
+.btn-outline {
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  background-color: white;
+}
+
+.btn-outline:hover {
+  background-color: rgba(0, 51, 102, 0.05);
+  border-color: var(--primary-light);
+}
+
+.btn-sm {
+  padding: calc(var(--spacing) * 0.75) var(--spacing);
+  font-size: 0.875rem;
+}
+
+.btn-lg {
+  padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3.5);
+  font-size: 1.125rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.btn-lg:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: calc(var(--spacing) * 2);
+}
+
+label {
+  display: block;
+  margin-bottom: var(--spacing);
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: calc(var(--spacing) * 1.25);
+  border: 1px solid var(--border-gray);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  background-color: white;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(0, 51, 102, 0.08);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-error {
+  color: var(--error);
+  font-size: 0.875rem;
+  margin-top: calc(var(--spacing) * 0.5);
+  font-weight: 500;
+}
+
+.form-hint {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-top: calc(var(--spacing) * 0.5);
+}
+
+/* Cards */
+.card {
+  background: white;
+  border: 1px solid var(--border-gray);
+  border-radius: 8px;
+  padding: calc(var(--spacing) * 2.5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary-light);
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 calc(var(--spacing) * 2.5);
+}
+
+.container-sm {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  gap: calc(var(--spacing) * 2.5);
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* Utility Classes */
+.mt {
+  margin-top: var(--spacing);
+}
+
+.mb {
+  margin-bottom: var(--spacing);
+}
+
+.pt {
+  padding-top: var(--spacing);
+}
+
+.pb {
+  padding-bottom: var(--spacing);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-muted {
+  color: var(--text-secondary);
+}
+
+.text-error {
+  color: var(--error);
+}
+
+.text-success {
+  color: var(--success);
+}
+
+.text-warning {
+  color: var(--warning);
+}
+
+.badge {
+  display: inline-block;
+  padding: calc(var(--spacing) * 0.375) calc(var(--spacing) * 1.25);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-primary {
+  background-color: rgba(0, 51, 102, 0.12);
+  color: var(--primary);
+}
+
+.badge-success {
+  background-color: rgba(0, 128, 0, 0.12);
+  color: var(--success);
+}
+
+.badge-warning {
+  background-color: rgba(255, 193, 7, 0.12);
+  color: #E6B800;
+}
+
+.badge-error {
+  background-color: rgba(227, 28, 35, 0.12);
+  color: var(--error);
+}
+
+/* Alerts */
+.alert {
+  padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 2);
+  border-radius: 6px;
+  margin-bottom: calc(var(--spacing) * 2);
+  border-left: 4px solid;
+}
+
+.alert-primary {
+  background-color: rgba(0, 51, 102, 0.08);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.alert-success {
+  background-color: rgba(0, 128, 0, 0.08);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.alert-warning {
+  background-color: rgba(255, 193, 7, 0.08);
+  border-color: var(--warning);
+  color: #E6B800;
+}
+
+.alert-error {
+  background-color: rgba(227, 28, 35, 0.08);
+  border-color: var(--error);
+  color: var(--error);
+}

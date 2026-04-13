@@ -1,0 +1,95 @@
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 200px); /* Adjusts for header/footer approx */
+  padding: calc(var(--spacing) * 4);
+  background-color: var(--system-background);
+}
+
+.login-container {
+  width: 100%;
+  max-width: 440px;
+}
+
+.login-card {
+  background: var(--system-background);
+  padding: calc(var(--spacing) * 5) calc(var(--spacing) * 4);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.login-header {
+  margin-bottom: calc(var(--spacing) * 4);
+}
+
+.login-logo {
+  height: 50px;
+  width: auto;
+  margin-bottom: calc(var(--spacing) * 2);
+}
+
+.login-header h2 {
+  font-size: 1.8rem;
+  margin-bottom: calc(var(--spacing) * 1);
+  letter-spacing: -0.02em;
+}
+
+.login-header p {
+  color: var(--label-secondary);
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.login-actions {
+  margin-bottom: calc(var(--spacing) * 4);
+}
+
+/* Specific Gov.br Button */
+.btn-govbr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--spacing) * 1.5);
+  width: 100%;
+  background-color: #1351b4; /* Standard gov.br blue */
+  color: white;
+  padding: calc(var(--spacing) * 2);
+  font-size: 1.15rem;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s var(--spring-easing), background-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 14px rgba(19, 81, 180, 0.2);
+}
+
+.btn-govbr:hover {
+  background-color: #0c326f;
+  box-shadow: 0 6px 20px rgba(19, 81, 180, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-govbr:active {
+  transform: scale(0.97);
+}
+
+.govbr-icon {
+  height: 24px;
+  width: auto;
+  filter: brightness(0) invert(1); /* make it white to fit the button */
+}
+
+.login-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding-top: calc(var(--spacing) * 3);
+}
+
+.login-hint {
+  font-size: 0.85rem;
+  color: var(--label-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
