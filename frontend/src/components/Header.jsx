@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store';
 import './Header.css';
 
@@ -22,6 +22,7 @@ export default function Header() {
             <nav className="header-nav">
               <Link to="/mapa" className="nav-link">Mapa de Problemas</Link>
               <Link to="/acompanhar" className="nav-link">Acompanhar</Link>
+              <Link to="/analise" className="nav-link">Análise</Link>
               {user && user.role === 'admin' && (
                 <Link to="/admin" className="nav-link">Admin</Link>
               )}

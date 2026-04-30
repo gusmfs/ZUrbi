@@ -1,3 +1,4 @@
+import React from 'react';
 import './AnaliseDesempenho.css';
 
 export default function AnaliseDesempenho() {
