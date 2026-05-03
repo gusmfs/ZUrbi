@@ -1,18 +1,19 @@
 # Development environment — includes hot-reload for active development
+# Variáveis lidas automaticamente do .env na mesma pasta
 services:
   postgres:
     image: postgres:16-alpine
     container_name: zurbi-db
     environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_INITDB_ARGS: "-U postgres"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5433:5432"
+      - "${POSTGRES_PORT:-5433}:5432"
     volumes:
       - zurbi_pgdata:/var/lib/postgresql/data
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U zurbi_user -d zurbi_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -22,8 +23,8 @@ services:
     container_name: zurbi-minio
     command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -38,18 +39,16 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/zurbi_db
-      SPRING_DATASOURCE_USERNAME: zurbi_user
-      SPRING_DATASOURCE_PASSWORD: zurbi_pass
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
       MINIO_URL: http://minio:9000
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
-      MINIO_BUCKET: zurbi-midias
-      MINIO_PUBLIC_URL: http://localhost:9000
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_BUCKET: ${MINIO_BUCKET}
+      MINIO_PUBLIC_URL: ${MINIO_PUBLIC_URL}
     volumes:
-      # Mount source code for hot-reload
       - ./zurbi-backend/src:/app/src
-      # Mount pom.xml for dependency changes
       - ./zurbi-backend/pom.xml:/app/pom.xml
     depends_on:
       postgres:

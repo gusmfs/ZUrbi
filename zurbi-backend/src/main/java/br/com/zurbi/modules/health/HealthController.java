@@ -1,5 +1,6 @@
 package br.com.zurbi.modules.health;
 
+import java.time.Instant;
 import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthController {
 
     @GetMapping("/health")
-    public Map<String, String> health() {
-        return Map.of("status", "ok");
+    public Map<String, Object> health() {
+        return Map.of("status", "ok", "timestamp", Instant.now().toString(), "version", "1.0.0", "environment",
+                "development", "database", "connected", "message", "API is running");
     }
 }

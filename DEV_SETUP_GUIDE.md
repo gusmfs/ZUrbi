@@ -1,60 +1,84 @@
-# Guia de Setup de Desenvolvimento — Docker
+# Guia de Setup de Desenvolvimento
 
-## Status da Aplicação
+## Pré-requisitos
 
-Quando o comando `docker-compose -f docker-compose.dev.yml up --build` terminar, você verá mensagens assim:
+- Docker + Docker Compose instalados
+- Arquivo `.env` na raiz do projeto (já existe — não comitar com senhas reais)
+
+> **Porta 5433:** o PostgreSQL do Docker roda na porta `5433` porque a `5432` já está ocupada pelo PostgreSQL instalado localmente na máquina. Dentro dos containers, a comunicação continua em `5432`.
+
+---
+
+## Subir o ambiente de desenvolvimento
+
+```bash
+# Na raiz do projeto (onde está o docker-compose.dev.yml)
+docker compose -f docker-compose.dev.yml up --build
+```
+
+Quando terminar você verá:
 
 ```
-zurbi-app-dev | 2026-05-03 15:30:00.000 INFO 1 --- [main] b.c.z.ZurbiApplication : Started ZurbiApplication in X seconds
-zurbi-postgres | (healthcheck passed)
-zurbi-minio | (started)
+zurbi-app-dev | Started ZurbiApplication in X seconds
+zurbi-db      | (healthcheck passed)
+zurbi-minio   | (started)
 ```
 
 ---
 
 ## Validar que tudo está funcionando
 
-### 1. **Verificar se a app está rodando**
+### 1. App respondendo
+
 ```bash
 curl http://localhost:8080/api/health
 ```
-Esperado: resposta `200 OK` com status
 
-### 2. **Verificar o banco de dados**
-**Opção A: Via Beekeeper Studio**
-1. Abra Beekeeper Studio
-2. Create New Connection → PostgreSQL
+Esperado: `200 OK`
+
+---
+
+### 2. Banco de dados
+
+**Via Beekeeper Studio**
+
+1. Abra o Beekeeper Studio
+2. New Connection → PostgreSQL
 3. Preencha:
    - Host: `localhost`
-   - Port: `5432`
+   - Port: **`5433`** ← não é a padrão, use 5433
    - Username: `zurbi_user`
    - Password: `zurbi_pass`
    - Database: `zurbi_db`
-4. Teste a conexão → deve funcionar
+4. Teste a conexão
+5. Abra `flyway_schema_history` — deve mostrar 3 migrações executadas:
+   - `V1__create_tables`
+   - `V2__seed_data`
+   - `V3__create_midia_table`
 
-5. Clique em `flyway_schema_history` — você deve ver as 3 migrações executadas:
-   - V1__create_tables.sql
-   - V2__seed_data.sql
-   - V3__create_midia_table.sql
+**Via linha de comando**
 
-**Opção B: Via linha de comando (psql)**
 ```bash
-psql -h localhost -U zurbi_user -d zurbi_db
-# Digite a senha: zurbi_pass
+psql -h localhost -p 5433 -U zurbi_user -d zurbi_db
+# Senha: zurbi_pass
 
-# No prompt postgres:
-zurbi_db=# \dt  # lista todas as tabelas
-zurbi_db=# SELECT * FROM flyway_schema_history;  # mostra migrações executadas
+zurbi_db=# \dt                              # lista tabelas
+zurbi_db=# SELECT * FROM flyway_schema_history;  # migrações
 ```
 
-### 3. **Verificar logs da aplicação**
-```bash
-docker-compose -f docker-compose.dev.yml logs -f app
-```
+---
 
-### 4. **Testar um endpoint da API**
+### 3. MinIO (armazenamento de imagens)
+
+Console disponível em `http://localhost:9001`
+- User: `minioadmin`
+- Senha: `minioadmin`
+
+---
+
+### 4. Testar um endpoint
+
 ```bash
-# Criar um usuário
 curl -X POST http://localhost:8080/api/usuarios \
   -H "Content-Type: application/json" \
   -d '{
@@ -69,66 +93,48 @@ Esperado: resposta com `id`, `nome`, `email`, `tipo`, `criadoEm`
 
 ---
 
-## Desenvolvimento com Hot-Reload
+## Hot-reload (edição sem reiniciar)
 
-Agora você pode **editar código** e as mudanças **recarregam automaticamente**:
+O Spring DevTools está ativo no ambiente dev:
 
-1. Edite um arquivo em `src/main/java/...`
-2. Salve o arquivo
-3. Spring DevTools detecta a mudança em ~5 segundos
-4. App reinicia automaticamente
-5. Veja a mudança em `docker-compose -f docker-compose.dev.yml logs -f app`
+1. Edite um arquivo em `zurbi-backend/src/main/java/...`
+2. Salve
+3. Em ~5 segundos o app reinicia automaticamente
+4. Acompanhe: `docker compose -f docker-compose.dev.yml logs -f app`
 
 ---
 
-## Parar/Resetar
+## Comandos úteis
 
 ```bash
-# Ver logs em tempo real
-docker-compose -f docker-compose.dev.yml logs -f
+# Logs em tempo real
+docker compose -f docker-compose.dev.yml logs -f
 
 # Parar containers (mantém dados)
-docker-compose -f docker-compose.dev.yml down
+docker compose -f docker-compose.dev.yml down
 
-# Parar e resetar banco (remove volumes)
-docker-compose -f docker-compose.dev.yml down -v
+# Parar e apagar banco (reset completo)
+docker compose -f docker-compose.dev.yml down -v
 
-# Parar tudo
-docker-compose -f docker-compose.dev.yml down
+# Rebuild da imagem da app
+docker compose -f docker-compose.dev.yml up --build app
 ```
 
 ---
 
-## Se algo deu errado
+## Troubleshooting
 
-### App não inicia
+### App não sobe
+
 ```bash
-# Ver erro completo
-docker-compose -f docker-compose.dev.yml logs app
+docker compose -f docker-compose.dev.yml logs app
 ```
 
-### PostgreSQL não conecta
-Pode ser porta 5432 já em uso:
-```bash
-# Ver o que está usando 5432
-lsof -i :5432
+### Erro de conexão com o banco
 
-# Matar processo (se necessário)
-kill -9 <PID>
-```
+Confirme que está usando a porta `5433` (não `5432`) nas ferramentas externas.  
+Internamente entre containers a porta é `5432` — isso é normal.
 
 ### MinIO não abre
-Console está em `http://localhost:9001`
-- User: `minioadmin`
-- Senha: `minioadmin`
 
----
-
-## Próximos passos
-
-1. ✅ Validar com `curl http://localhost:8080/api/health`
-2. ✅ Conectar ao banco no Beekeeper
-3. ✅ Ver migrações em `flyway_schema_history`
-4. ✅ Testar criar um usuário via curl acima
-
-**Está tudo funcionando? Avise quando estiver pronto para os próximos passos!**
+Acesse `http://localhost:9001` (console) ou `http://localhost:9000` (API).
