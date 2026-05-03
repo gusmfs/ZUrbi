@@ -1,12 +1,16 @@
 // src/main/java/br/com/zurbi/modules/ocorrencia/Ocorrencia.java
 package br.com.zurbi.modules.ocorrencia;
 
+import br.com.zurbi.modules.midia.Midia;
 import br.com.zurbi.modules.orgao.Orgao;
 import br.com.zurbi.modules.usuario.Usuario;
 import br.com.zurbi.shared.enums.*;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -72,6 +76,10 @@ public class Ocorrencia {
 
     @Column
     private LocalDateTime resolvidoEm;
+
+    @OneToMany(mappedBy = "ocorrencia", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("enviadoEm ASC")
+    private List<Midia> midias = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {
