@@ -1,0 +1,18 @@
+# Credenciais e configurações locais
+.env
+.env.local
+.env.*.local
+
+# Maven
+zurbi-backend/target/
+
+# IDE
+.idea/
+*.iml
+.vscode/settings.json
+
+# OS
+.DS_Store
+
+.claudeignore
+.CLAUDE.md

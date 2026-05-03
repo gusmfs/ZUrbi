@@ -1,0 +1,62 @@
+# Development environment — includes hot-reload for active development
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: zurbi-db
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_INITDB_ARGS: "-U postgres"
+    ports:
+      - "5433:5432"
+    volumes:
+      - zurbi_pgdata:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zurbi_user -d zurbi_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    container_name: zurbi-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - zurbi_minio:/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: zurbi-app-dev
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/zurbi_db
+      SPRING_DATASOURCE_USERNAME: zurbi_user
+      SPRING_DATASOURCE_PASSWORD: zurbi_pass
+      MINIO_URL: http://minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: zurbi-midias
+      MINIO_PUBLIC_URL: http://localhost:9000
+    volumes:
+      # Mount source code for hot-reload
+      - ./zurbi-backend/src:/app/src
+      # Mount pom.xml for dependency changes
+      - ./zurbi-backend/pom.xml:/app/pom.xml
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_started
+
+volumes:
+  zurbi_pgdata:
+  zurbi_minio:

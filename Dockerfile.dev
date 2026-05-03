@@ -1,0 +1,14 @@
+FROM maven:3.9.9-eclipse-temurin-21-alpine
+
+WORKDIR /app
+
+# Cache Maven dependencies
+COPY zurbi-backend/pom.xml .
+RUN mvn -q -e -DskipTests dependency:go-offline
+
+# Copy source code
+COPY zurbi-backend/src ./src
+
+# Run app with hot-reload (Spring DevTools enabled via pom.xml)
+EXPOSE 8080
+CMD ["mvn", "spring-boot:run"]
