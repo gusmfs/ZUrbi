@@ -7,6 +7,7 @@ import './MapReport.css';
 export default function MapReport() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
   const { addProblem, problems } = useProblemStore();
 
   const handleLocationSelect = (location) => {
@@ -16,13 +17,13 @@ export default function MapReport() {
   const handleSubmit = async (formData) => {
     setIsLoading(true);
     try {
-      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 800));
 
       addProblem({
         ...formData,
         status: 'reported',
         views: 0,
+        createdAt: new Date().toISOString(),
       });
 
       setSelectedLocation(null);
@@ -43,7 +44,7 @@ export default function MapReport() {
           </p>
         </div>
 
-        <div className="map-report-layout">
+        <div className={`map-report-layout step-${currentStep}`}>
           <div className="map-section">
             <Map
               onLocationSelect={handleLocationSelect}
@@ -57,6 +58,7 @@ export default function MapReport() {
               selectedLocation={selectedLocation}
               onSubmit={handleSubmit}
               isLoading={isLoading}
+              onStepChange={setCurrentStep}
             />
           </div>
         </div>
