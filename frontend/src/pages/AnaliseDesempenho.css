@@ -1,8 +1,12 @@
 ﻿.analise-desempenho {
   padding: calc(var(--spacing) * 8) 0;
-  background-color: var(--system-gray-6);
-  border-top: 1px solid var(--system-gray-5);
-  border-bottom: 1px solid var(--system-gray-5);
+  background-color: var(--system-background);
+  border-top: none;
+  border-bottom: none;
+}
+
+.analise-desempenho .container {
+  background-color: var(--system-background);
 }
 
 .section-header {
@@ -31,7 +35,7 @@
 }
 
 .scenario-card {
-  background-color: var(--system-background);
+  background-color: var(--system-gray-6);
   border-radius: var(--radius-xl);
   padding: calc(var(--spacing) * 4);
   box-shadow: var(--shadow-md);
@@ -144,17 +148,23 @@
 }
 
 .effect-card {
-  background-color: var(--system-background);
+  background-color: var(--system-gray-6);
   padding: calc(var(--spacing) * 4);
   border-radius: var(--radius-lg);
   text-align: center;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.3s var(--spring-easing), box-shadow 0.3s ease;
+  transition: transform 0.3s var(--spring-easing), box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .effect-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-lg);
+  background-color: var(--system-background);
+}
+
+.effect-card h4,
+.effect-card p {
+  color: var(--label-primary);
 }
 
 .effect-icon {
