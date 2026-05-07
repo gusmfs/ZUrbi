@@ -1,5 +1,7 @@
 import React from 'react';
 import './AnaliseDesempenho.css';
+import GraficoSemZurbi from '../components/GraficoSemZurbi';
+import GraficoComZurbi from '../components/GraficoComZurbi';
 
 export default function AnaliseDesempenho() {
   return (
@@ -18,7 +20,7 @@ export default function AnaliseDesempenho() {
           <div className="scenario-card before">
             <h3>Sem zUrbi: Incerteza e Ineficiência</h3>
             <div className="graph-placeholder before-bg">
-              <span>Gráfico de Dispersão: Pontos espalhados</span>
+              <GraficoSemZurbi />
             </div>
             <div className="kpi-grid">
               <div className="kpi-item">
@@ -49,7 +51,7 @@ export default function AnaliseDesempenho() {
           <div className="scenario-card after">
             <h3>Com zUrbi: Previsibilidade e Controle</h3>
             <div className="graph-placeholder after-bg">
-              <span>Gráfico de Dispersão: Pontos concentrados</span>
+              <GraficoComZurbi />
             </div>
             <div className="kpi-grid">
               <div className="kpi-item">
