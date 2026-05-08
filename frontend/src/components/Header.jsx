@@ -22,6 +22,7 @@ export default function Header() {
             <nav className="header-nav">
               <Link to="/mapa" className="nav-link">Mapa de Problemas</Link>
               <Link to="/acompanhar" className="nav-link">Acompanhar</Link>
+              <Link to="/analise" className="nav-link">Análise</Link>
               {user && user.role === 'admin' && (
                 <Link to="/admin" className="nav-link">Admin</Link>
               )}
@@ -38,9 +39,6 @@ export default function Header() {
                 <div className="auth-buttons">
                   <Link to="/login" className="btn btn-outline btn-sm">
                     Entrar
-                  </Link>
-                  <Link to="/registrar" className="btn btn-primary btn-sm">
-                    Registrar
                   </Link>
                 </div>
               )}
