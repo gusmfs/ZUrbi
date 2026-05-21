@@ -45,12 +45,26 @@ services:
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
       MINIO_BUCKET: ${MINIO_BUCKET}
       MINIO_PUBLIC_URL: ${MINIO_PUBLIC_URL}
+      ZURBI_OLLAMA_ENABLED: ${ZURBI_OLLAMA_ENABLED:-true}
+      ZURBI_OLLAMA_BASE_URL: ${ZURBI_OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      ZURBI_OLLAMA_MODEL: ${ZURBI_OLLAMA_MODEL:-qwen2.5:1.5b}
     depends_on:
       postgres:
         condition: service_healthy
       minio:
         condition: service_started
 
+  # Perfil opcional: docker compose --profile ai up -d
+  ollama:
+    image: ollama/ollama:latest
+    container_name: zurbi-ollama
+    profiles: ["ai"]
+    ports:
+      - "11434:11434"
+    volumes:
+      - zurbi_ollama:/root/.ollama
+
 volumes:
   zurbi_pgdata:
   zurbi_minio:
+  zurbi_ollama:
