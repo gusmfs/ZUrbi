@@ -7,6 +7,13 @@ import { DEMO_USUARIO_CIDADAO } from '../constants/ocorrencia';
 import { registrarOcorrencia } from '../services/ocorrencias';
 import './MapReport.css';
 
+const STEP_TITLES = {
+  1: 'Local e descrição',
+  2: 'Classificação',
+  3: 'Revisar',
+  4: 'Concluído',
+};
+
 function resolverUsuarioId(user) {
   if (!user) return DEMO_USUARIO_CIDADAO;
   const id = user.usuarioId || user.id;
@@ -34,6 +41,8 @@ export default function MapReport() {
   const [protocoloSucesso, setProtocoloSucesso] = useState(null);
   const [orgaoNomeSucesso, setOrgaoNomeSucesso] = useState(null);
 
+  const showMap = currentStep === 1;
+
   const handleLocationSelect = (location) => {
     setSelectedLocation(location);
     setSubmitError(null);
@@ -54,8 +63,8 @@ export default function MapReport() {
       longitude: location.lng,
       enderecoAproximado: campos.enderecoAproximado?.trim() || null,
       bairro: campos.bairro?.trim() || null,
-      riscoAcidente: Boolean(campos.riscoAcidente),
-      recorrente: Boolean(campos.recorrente),
+      riscoAcidente: false,
+      recorrente: false,
     };
 
     try {
@@ -81,41 +90,53 @@ export default function MapReport() {
   };
 
   return (
-    <div className="map-report">
-      <div className="container">
-        <div className="page-header">
-          <h1>Abrir chamado</h1>
-          <p className="page-description">
-            Marque no mapa onde está o problema em Porto Seguro e descreva a situação
-            para enviar à prefeitura.
+    <div className="map-report map-report--flow">
+      <header className="map-report-toolbar">
+        <div className="map-report-toolbar-inner">
+          <h1 className="map-report-title">Abrir chamado</h1>
+          <p className="map-report-step-meta">
+            Passo {currentStep} de 4 · {STEP_TITLES[currentStep]}
           </p>
         </div>
+      </header>
 
-        <div className={`map-report-layout step-${currentStep}`}>
-          <div className="map-section">
-            <Map
-              onLocationSelect={handleLocationSelect}
-              selectedLocation={selectedLocation}
-            />
+      <div className={`map-report-body step-${currentStep}`}>
+        {showMap && (
+          <div className="map-report-map-stage" aria-label="Mapa — marque o local do problema">
+            <div className="map-report-map-inner">
+              <Map
+                variant="report"
+                onLocationSelect={handleLocationSelect}
+                selectedLocation={selectedLocation}
+              />
+            </div>
+            <p className="map-report-map-hint" role="status">
+              {selectedLocation
+                ? 'Local marcado. Preencha os dados abaixo.'
+                : 'Toque no mapa onde está o problema'}
+            </p>
           </div>
+        )}
 
-          <div className="form-section">
-            <OcorrenciaForm
-              selectedLocation={selectedLocation}
-              onSubmit={handleSubmit}
-              isLoading={isLoading}
-              onStepChange={setCurrentStep}
-              submitError={submitError}
-              protocoloSucesso={protocoloSucesso}
-              orgaoNomeSucesso={orgaoNomeSucesso}
-              onNovoChamado={handleNovoChamado}
-            />
-            {currentStep === 4 && protocoloSucesso && (
-              <p className="map-report-follow">
-                <Link to="/acompanhar">Acompanhar chamados</Link>
-              </p>
-            )}
-          </div>
+        <div
+          className={`map-report-panel${showMap ? ' map-report-panel--sheet' : ' map-report-panel--full'}`}
+        >
+          <OcorrenciaForm
+            selectedLocation={selectedLocation}
+            onSubmit={handleSubmit}
+            isLoading={isLoading}
+            onStepChange={setCurrentStep}
+            submitError={submitError}
+            protocoloSucesso={protocoloSucesso}
+            orgaoNomeSucesso={orgaoNomeSucesso}
+            onNovoChamado={handleNovoChamado}
+            mobileFlow
+          />
+          {currentStep === 4 && protocoloSucesso && (
+            <p className="map-report-follow">
+              <Link to="/acompanhar">Acompanhar chamados</Link>
+            </p>
+          )}
         </div>
       </div>
     </div>

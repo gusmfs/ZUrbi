@@ -1,12 +1,7 @@
-import { useState, useCallback, useRef } from 'react';
-import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import { useCallback, useEffect, useRef } from 'react';
+import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import { MAPA_PORTO_SEGURO } from '../constants/ocorrencia';
 import './Map.css';
-
-const mapContainerStyle = {
-  width: '100%',
-  height: '100%',
-};
 
 const defaultCenter = MAPA_PORTO_SEGURO.center;
 const mapBounds = MAPA_PORTO_SEGURO.bounds;
@@ -30,64 +25,101 @@ const problemIcon = {
   scale: 1.2,
 };
 
-export default function Map({ onLocationSelect, selectedLocation, problems }) {
-  const [hoveredProblem, setHoveredProblem] = useState(null);
-  const mapRef = useRef(null);
-  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+function triggerMapResize(map) {
+  if (!map || typeof google === 'undefined') return;
+  google.maps.event.trigger(map, 'resize');
+  map.setCenter(defaultCenter);
+}
 
-  const handleMapClick = useCallback((event) => {
-    onLocationSelect({
-      lat: event.latLng.lat(),
-      lng: event.latLng.lng(),
-    });
-  }, [onLocationSelect]);
+function MapUnconfigured() {
+  return (
+    <div className="map-container map-container--unconfigured">
+      <div className="map-setup-hint">
+        <h3>Mapa não configurado</h3>
+        <p>
+          É necessária uma chave da <strong>Maps JavaScript API</strong> do Google Cloud.
+        </p>
+        <ol>
+          <li>
+            Acesse{' '}
+            <a
+              href="https://console.cloud.google.com/google/maps-apis"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Google Cloud Console → Maps
+            </a>
+          </li>
+          <li>Crie um projeto e ative <strong>Maps JavaScript API</strong></li>
+          <li>
+            No arquivo <code>.env.local</code> na raiz do projeto:
+            <pre>VITE_GOOGLE_MAPS_API_KEY=sua_chave_aqui</pre>
+          </li>
+          <li>Reinicie o frontend (<code>npm run dev</code>)</li>
+        </ol>
+      </div>
+    </div>
+  );
+}
+
+function GoogleMapView({ onLocationSelect, selectedLocation, problems, variant, apiKey }) {
+  const mapRef = useRef(null);
+  const containerRef = useRef(null);
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: apiKey,
+    language: 'pt-BR',
+  });
+
+  const handleMapClick = useCallback(
+    (event) => {
+      onLocationSelect({
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng(),
+      });
+    },
+    [onLocationSelect]
+  );
 
   const onMapLoad = useCallback((map) => {
     mapRef.current = map;
+    requestAnimationFrame(() => triggerMapResize(map));
+    setTimeout(() => triggerMapResize(map), 150);
+    setTimeout(() => triggerMapResize(map), 500);
   }, []);
 
-  if (!apiKey || apiKey === 'undefined') {
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || !mapRef.current) return undefined;
+
+    const ro = new ResizeObserver(() => {
+      triggerMapResize(mapRef.current);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [isLoaded]);
+
+  if (loadError) {
     return (
-      <div className="map-container map-container--unconfigured">
-        <div className="map-setup-hint">
-          <h3>Mapa não configurado</h3>
-          <p>
-            É necessária uma chave da <strong>Maps JavaScript API</strong> do Google Cloud.
-          </p>
-          <ol>
-            <li>
-              Acesse{' '}
-              <a
-                href="https://console.cloud.google.com/google/maps-apis"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Google Cloud Console → Maps
-              </a>
-            </li>
-            <li>Crie um projeto e ative <strong>Maps JavaScript API</strong></li>
-            <li>Em Credenciais, crie uma chave de API (restrita por HTTP referrer)</li>
-            <li>
-              No arquivo <code>frontend/.env.local</code>, adicione:
-              <pre>VITE_GOOGLE_MAPS_API_KEY=sua_chave_aqui</pre>
-            </li>
-            <li>Reinicie o frontend (<code>npm run dev</code>)</li>
-          </ol>
-          <p className="map-setup-hint__note">
-            Em desenvolvimento, libere os referrers: <code>http://localhost:5173/*</code> e{' '}
-            <code>http://127.0.0.1:5173/*</code>. O faturamento precisa estar ativo no projeto
-            (há crédito gratuito mensal do Google).
-          </p>
-        </div>
+      <div className={`map-container map-container--error${variant ? ` map-container--${variant}` : ''}`}>
+        <p>Não foi possível carregar o mapa. Verifique a chave da API e as restrições no Google Cloud.</p>
       </div>
     );
   }
 
+  const containerClass = [
+    'map-container',
+    variant ? `map-container--${variant}` : '',
+    !isLoaded ? 'map-container--loading' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
-    <div className="map-container">
-      <LoadScript googleMapsApiKey={apiKey} language="pt-BR">
+    <div ref={containerRef} className={containerClass}>
+      {isLoaded ? (
         <GoogleMap
-          mapContainerStyle={mapContainerStyle}
+          mapContainerClassName="map-canvas"
           center={defaultCenter}
           zoom={defaultZoom}
           onClick={handleMapClick}
@@ -99,6 +131,9 @@ export default function Map({ onLocationSelect, selectedLocation, problems }) {
           options={{
             maxZoom: 18,
             minZoom: 11,
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: false,
           }}
         >
           {selectedLocation && (
@@ -112,47 +147,42 @@ export default function Map({ onLocationSelect, selectedLocation, problems }) {
             >
               <InfoWindow position={{ lat: selectedLocation.lat, lng: selectedLocation.lng }}>
                 <div className="info-window">
-                  <p>Latitude: {selectedLocation.lat.toFixed(5)}</p>
-                  <p>Longitude: {selectedLocation.lng.toFixed(5)}</p>
+                  <p>Local marcado no mapa</p>
                 </div>
               </InfoWindow>
             </Marker>
           )}
 
-          {problems &&
-            problems.map((problem) => (
-              <Marker
-                key={problem.id}
-                position={{
-                  lat: problem.location.lat,
-                  lng: problem.location.lng,
-                }}
-                title={problem.title}
-                icon={problemIcon}
-                onMouseOver={() => setHoveredProblem(problem.id)}
-                onMouseOut={() => setHoveredProblem(null)}
-              >
-                {hoveredProblem === problem.id && (
-                  <InfoWindow
-                    position={{
-                      lat: problem.location.lat,
-                      lng: problem.location.lng,
-                    }}
-                  >
-                    <div className="marker-popup">
-                      <h4>{problem.title}</h4>
-                      <p>{problem.description}</p>
-                      <small>{new Date(problem.createdAt).toLocaleDateString('pt-BR')}</small>
-                    </div>
-                  </InfoWindow>
-                )}
-              </Marker>
-            ))}
+          {problems?.map((problem) => (
+            <Marker
+              key={problem.id}
+              position={{
+                lat: problem.location.lat,
+                lng: problem.location.lng,
+              }}
+              title={problem.title}
+              icon={problemIcon}
+            />
+          ))}
         </GoogleMap>
-      </LoadScript>
-      <div className="map-instructions">
-        <p>Clique no mapa para marcar onde está o problema (Porto Seguro)</p>
-      </div>
+      ) : (
+        <div className="map-loading-placeholder" aria-busy="true">
+          <span>Carregando mapa…</span>
+        </div>
+      )}
+      {variant !== 'report' && (
+        <div className="map-instructions">
+          <p>Clique no mapa para marcar onde está o problema (Porto Seguro)</p>
+        </div>
+      )}
     </div>
   );
+}
+
+export default function Map(props) {
+  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+  if (!apiKey || apiKey === 'undefined') {
+    return <MapUnconfigured />;
+  }
+  return <GoogleMapView {...props} apiKey={apiKey} />;
 }

@@ -17,6 +17,13 @@ const BAIRROS_OPCOES = [...BAIRROS_PORTO_SEGURO].sort((a, b) =>
   a.localeCompare(b, 'pt-BR')
 );
 
+const FLOW_STEPS = [
+  { id: 1, short: 'Local' },
+  { id: 2, short: 'Tipo' },
+  { id: 3, short: 'Revisar' },
+  { id: 4, short: 'Pronto' },
+];
+
 export default function OcorrenciaForm({
   selectedLocation,
   onSubmit,
@@ -26,6 +33,7 @@ export default function OcorrenciaForm({
   protocoloSucesso,
   orgaoNomeSucesso,
   onNovoChamado,
+  mobileFlow = false,
 }) {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -35,8 +43,6 @@ export default function OcorrenciaForm({
     enderecoAproximado: '',
     bairro: '',
     urgencia: 'MEDIA',
-    riscoAcidente: false,
-    recorrente: false,
   });
   const [imagens, setImagens] = useState([]);
   const [errors, setErrors] = useState({});
@@ -142,7 +148,16 @@ export default function OcorrenciaForm({
   const goToStep = (next) => {
     setStep(next);
     if (onStepChange) onStepChange(next);
+    if (mobileFlow) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
+
+  useEffect(() => {
+    if (mobileFlow && step !== 1) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [step, mobileFlow]);
 
   const avancarPasso = async () => {
     const newErrors = validateStep(step);
@@ -160,14 +175,10 @@ export default function OcorrenciaForm({
         try {
           resultado = await classificarChamado({
             descricao: formData.descricao.trim(),
-            riscoAcidente: formData.riscoAcidente,
-            recorrente: formData.recorrente,
           });
         } catch {
           resultado = classificarChamadoLocal({
             descricao: formData.descricao.trim(),
-            riscoAcidente: formData.riscoAcidente,
-            recorrente: formData.recorrente,
           });
           setClassificacaoErro(
             'Servidor de triagem indisponível — classificação aplicada localmente. Você pode ajustar abaixo.'
@@ -178,8 +189,6 @@ export default function OcorrenciaForm({
       } catch {
         const local = classificarChamadoLocal({
           descricao: formData.descricao.trim(),
-          riscoAcidente: formData.riscoAcidente,
-          recorrente: formData.recorrente,
         });
         aplicarClassificacao(local);
         setClassificacaoErro(null);
@@ -227,8 +236,6 @@ export default function OcorrenciaForm({
       enderecoAproximado: '',
       bairro: '',
       urgencia: 'MEDIA',
-      riscoAcidente: false,
-      recorrente: false,
     });
     setImagens([]);
     setErrors({});
@@ -239,37 +246,82 @@ export default function OcorrenciaForm({
   const subs =
     SUBCATEGORIAS_POR_CATEGORIA[formData.categoria] || [];
 
-  return (
-    <form className="problem-form stepped-form" onSubmit={handleSubmit}>
-      <div className="progress-indicator">
-        {[1, 2, 3, 4].map((num) => (
-          <div key={num} className={`step-dot ${step >= num ? 'active' : ''}`}>
-            {num}
-          </div>
-        ))}
-      </div>
+  const formClass = [
+    'problem-form',
+    'stepped-form',
+    mobileFlow ? 'problem-form--mobile' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
+  return (
+    <form className={formClass} onSubmit={handleSubmit}>
+      {mobileFlow ? (
+        <div className="flow-progress" aria-label="Progresso do chamado">
+          {FLOW_STEPS.map((s) => (
+            <div
+              key={s.id}
+              className={`flow-progress-segment${step >= s.id ? ' is-done' : ''}${step === s.id ? ' is-current' : ''}`}
+            >
+              <span className="flow-progress-bar" />
+              <span className="flow-progress-label">{s.short}</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="progress-indicator">
+          {[1, 2, 3, 4].map((num) => (
+            <div key={num} className={`step-dot ${step >= num ? 'active' : ''}`}>
+              {num}
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="ocorrencia-form-scroll">
       {step === 1 && (
         <div className="form-step">
-          <h2>Passo 1: Local e descrição</h2>
+          <h2 className="form-step-title">O que e onde aconteceu?</h2>
 
-          <div className="form-group">
-            <label>Localização no mapa *</label>
-            {selectedLocation ? (
-              <div className="location-display">
-                <p>
-                  Latitude: <strong>{selectedLocation.lat.toFixed(5)}</strong>
-                </p>
-                <p>
-                  Longitude: <strong>{selectedLocation.lng.toFixed(5)}</strong>
-                </p>
-              </div>
-            ) : (
-              <div className="form-error">
-                {errors.location || 'Clique no mapa para marcar o local do problema'}
-              </div>
-            )}
-          </div>
+          {mobileFlow && (
+            <div
+              className={`location-chip${selectedLocation ? ' is-set' : ''}${errors.location ? ' has-error' : ''}`}
+              role="status"
+            >
+              <span className="location-chip-icon" aria-hidden>
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                  <path
+                    d="M12 21s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11z"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                  />
+                  <circle cx="12" cy="10" r="2" fill="currentColor" stroke="none" />
+                </svg>
+              </span>
+              <span className="location-chip-text">
+                {selectedLocation
+                  ? formData.enderecoAproximado?.trim() ||
+                    (buscandoEndereco ? 'Buscando endereço...' : 'Local marcado no mapa')
+                  : errors.location || 'Marque o ponto no mapa acima'}
+              </span>
+            </div>
+          )}
+
+          {!mobileFlow && (
+            <div className="form-group">
+              <label>Localização no mapa *</label>
+              {selectedLocation ? (
+                <div className="location-display">
+                  <p>Local marcado no mapa.</p>
+                </div>
+              ) : (
+                <div className="form-error">
+                  {errors.location || 'Clique no mapa para marcar o local do problema'}
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="form-group">
             <label htmlFor="descricao">Descrição do problema *</label>
@@ -278,8 +330,9 @@ export default function OcorrenciaForm({
               name="descricao"
               value={formData.descricao}
               onChange={handleChange}
-              placeholder="Descreva o que está acontecendo, tamanho, referências próximas..."
+              placeholder="Ex.: buraco grande na rua, próximo à escola..."
               maxLength={MAX_DESCRICAO}
+              rows={mobileFlow ? 4 : undefined}
               aria-invalid={!!errors.descricao}
             />
             {errors.descricao && (
@@ -306,11 +359,13 @@ export default function OcorrenciaForm({
               readOnly={buscandoEndereco}
               aria-busy={buscandoEndereco}
             />
-            <div className="form-hint">
-              {buscandoEndereco
-                ? 'Identificando endereço a partir do mapa...'
-                : 'Você pode ajustar o texto se necessário'}
-            </div>
+            {!mobileFlow && (
+              <div className="form-hint">
+                {buscandoEndereco
+                  ? 'Identificando endereço a partir do mapa...'
+                  : 'Você pode ajustar o texto se necessário'}
+              </div>
+            )}
           </div>
 
           <div className="form-group">
@@ -330,40 +385,14 @@ export default function OcorrenciaForm({
               ))}
             </select>
             {errors.bairro && <div className="form-error">{errors.bairro}</div>}
-            <div className="form-hint">
-              Bairros oficiais de Porto Seguro — confirme o do local marcado no mapa
-            </div>
           </div>
 
-          <div className="form-group form-group--inline">
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                name="riscoAcidente"
-                checked={formData.riscoAcidente}
-                onChange={handleChange}
-              />
-              Há risco de acidente neste local
-            </label>
-          </div>
-
-          <div className="form-group form-group--inline">
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                name="recorrente"
-                checked={formData.recorrente}
-                onChange={handleChange}
-              />
-              Problema recorrente (já ocorreu antes)
-            </label>
-          </div>
         </div>
       )}
 
       {step === 2 && (
         <div className="form-step">
-          <h2>Passo 2: Classificação sugerida pela IA</h2>
+          <h2 className="form-step-title">Classificação sugerida</h2>
 
           {loadingClassificacao && (
             <p className="ocorrencia-ia-loading">Analisando sua descrição...</p>
@@ -444,32 +473,35 @@ export default function OcorrenciaForm({
             )}
           </div>
 
-          <div className="form-group">
-            <label htmlFor="imagens">Fotos (opcional)</label>
+          <div className="form-group form-group--file">
+            <label htmlFor="imagens" className="file-picker-label">
+              Fotos (opcional)
+              {imagens.length > 0 && (
+                <span className="file-picker-count">{imagens.length} selecionada(s)</span>
+              )}
+            </label>
             <input
               type="file"
               id="imagens"
               accept="image/*"
               multiple
               onChange={handleImagensChange}
+              className="file-picker-input"
             />
-            <div className="form-hint">
-              Até {MAX_FOTOS} imagens para ajudar na triagem.
-              {imagens.length > 0 && ` (${imagens.length} selecionada(s))`}
-            </div>
           </div>
         </div>
       )}
 
       {step === 3 && (
         <div className="form-step">
-          <h2>Passo 3: Confirmação</h2>
+          <h2 className="form-step-title">Confirme antes de enviar</h2>
 
           <div className="confirmation-box">
             <div className="confirmation-item">
               <span className="label">Local:</span>
               <span className="value">
-                {selectedLocation?.lat.toFixed(5)}, {selectedLocation?.lng.toFixed(5)}
+                {formData.enderecoAproximado?.trim() ||
+                  'Endereço não informado — confira o ponto no mapa'}
               </span>
             </div>
             {formData.bairro && (
@@ -506,38 +538,56 @@ export default function OcorrenciaForm({
             </div>
           )}
 
-          <p className="info-text">
-            Ao confirmar, o chamado será registrado e encaminhado conforme a categoria.
-          </p>
+          {!mobileFlow && (
+            <p className="info-text">
+              Ao confirmar, o chamado será registrado e encaminhado conforme a categoria.
+            </p>
+          )}
         </div>
       )}
 
       {step === 4 && protocoloSucesso && (
-        <div className="form-step">
-          <h2>Chamado registrado</h2>
-
-          <div className="protocol-box">
-            <div className="protocol-number">
-              <p className="protocol-label">Protocolo:</p>
-              <p className="protocol-value">{protocoloSucesso}</p>
-              {orgaoNomeSucesso && (
-                <p className="protocol-info">
-                  Encaminhado para: <strong>{orgaoNomeSucesso}</strong>
-                </p>
-              )}
-              <p className="protocol-info">
-                Guarde o protocolo para acompanhar em &quot;Acompanhar&quot;.
-              </p>
+        <div className="form-step form-step--success">
+          <div className="ocorrencia-success" role="status" aria-live="polite">
+            <div className="ocorrencia-success-icon" aria-hidden>
+              <svg viewBox="0 0 48 48" width="48" height="48">
+                <circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" strokeWidth="2" />
+                <path
+                  d="M14 24.5l7 7 13-14"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </div>
-          </div>
+            <h2 className="ocorrencia-success-title">Chamado registrado</h2>
+            <p className="ocorrencia-success-lead">
+              Seu relato foi recebido e será analisado pela Prefeitura de Porto Seguro.
+            </p>
 
-          <div className="alert alert-success">
-            Chamado enviado com sucesso. Obrigado por contribuir com a cidade!
+            <div className="ocorrencia-success-protocol">
+              <span className="ocorrencia-success-protocol-label">Protocolo</span>
+              <span className="ocorrencia-success-protocol-value">{protocoloSucesso}</span>
+            </div>
+
+            {orgaoNomeSucesso && (
+              <p className="ocorrencia-success-orgao">
+                Encaminhamento: <strong>{orgaoNomeSucesso}</strong>
+              </p>
+            )}
+
+            <p className="ocorrencia-success-hint">
+              Guarde o número do protocolo para consultar o andamento em{' '}
+              <strong>Acompanhar</strong>.
+            </p>
           </div>
         </div>
       )}
+      </div>
 
-      <div className="form-actions">
+      <div className={`form-actions${mobileFlow ? ' form-actions--sticky' : ''}`}>
         {step > 1 && step < 4 && (
           <button type="button" className="btn btn-secondary" onClick={handleBack}>
             Voltar
@@ -555,8 +605,10 @@ export default function OcorrenciaForm({
               : step === 3
                 ? isLoading
                   ? 'Enviando...'
-                  : 'Confirmar e abrir chamado'
-                : 'Próximo'}
+                  : mobileFlow
+                    ? 'Enviar chamado'
+                    : 'Confirmar e abrir chamado'
+                : 'Continuar'}
           </button>
         )}
 
