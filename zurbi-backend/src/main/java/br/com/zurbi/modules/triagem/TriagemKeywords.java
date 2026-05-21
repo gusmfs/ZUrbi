@@ -52,22 +52,57 @@ public final class TriagemKeywords {
             "drenagem", "dreno", "vala", "galeria pluvial", "manutencao de esgoto"
     );
 
+    /** Frases compostas — checadas antes da lista geral de categoria. */
+    public static final List<String> FRASES_TRANSITO = List.of(
+            "placa caida", "placa no chao", "placa no solo", "placa tombada", "placa quebrada",
+            "placa danificada", "placa arrancada", "sinal caido", "sinal no chao", "sinal tombado",
+            "placa de transito caida", "placa de pare caida", "cone caído", "cone caido", "cone no chao",
+            "cavalete caido", "barreira caida", "sinalizacao caida", "tachao", "tacha"
+    );
+
+    public static final List<String> FRASES_LIMPEZA = List.of(
+            "lixo acumulado", "lixo na rua", "lixo na calcada", "entulho na rua", "mato alto",
+            "capina necessaria", "podar arvore", "restos de construcao", "saco de lixo", "lixeira cheia",
+            "coleta nao passou", "animal morto", "carcaca de animal"
+    );
+
+    public static final List<String> FRASES_SANEAMENTO = List.of(
+            "vazamento de agua", "agua vazando", "cano estourado", "esgoto a ceu aberto",
+            "esgoto transbordando", "bueiro entupido", "bueiro entupido", "falta de agua", "sem agua",
+            "agua suja", "mal cheiro esgoto", "cheiro de esgoto"
+    );
+
+    public static final List<String> FRASES_ILUMINACAO = List.of(
+            "poste apagado", "poste caido", "poste quebrado", "lampada queimada", "lampada piscando",
+            "sem iluminacao", "rua escura", "luz apagada", "poste danificado"
+    );
+
+    public static final List<String> FRASES_VIARIO = List.of(
+            "buraco na rua", "buraco na via", "buraco na pista", "buraco grande", "cratera",
+            "pavimento afundado", "asfalto afundando", "calcada quebrada", "calcada irregular",
+            "meio fio quebrado", "via obstruida", "arvore caida na via", "galho na via"
+    );
+
     public static final List<String> TRANSITO = List.of(
             "transito", "trafego", "traffic", "semaforo", "semaforos", "sinaleira", "sinaleiras",
-            "sinalizacao", "sinalizacao viaria", "placa de transito", "placa de pare", "pare obrigatorio",
-            "faixa de pedestre", "faixa apagada", "lombada", "speed bump", "radar", "fiscalizacao eletronica",
+            "lombada", "quebra molas", "redutor de velocidade", "placa", "placas", "cone", "cones",
+            "cavalete", "cavaletes", "baliza", "defensa", "sinalizacao", "sinalizacao viaria",
+            "placa de transito", "placa de pare", "pare obrigatorio", "placa de velocidade",
+            "faixa de pedestre", "faixa apagada", "speed bump", "radar", "fiscalizacao eletronica",
             "cruzamento", "retorno", "rotatoria", "rotunda", "conversao proibida", "mao dupla",
             "congestionamento", "engarrafamento", "obstrucao da via", "interdicao", "desvio",
-            "sinal apagado", "amarelo piscando", "vermelho apagado", "controlador de transito"
+            "sinal apagado", "amarelo piscando", "vermelho apagado", "controlador de transito",
+            "sinal vertical", "sinal de transito", "proibido estacionar", "estacionamento proibido"
     );
 
     public static final List<String> LIMPEZA = List.of(
             "limpeza", "limpeza urbana", "lixo", "lixeira", "lixeiras", "coleta", "coleta de lixo",
-            "entulho", "entulhos", "residuo", "residuos", "descarte irregular",
-            "mato", "mato alto", "capina", "rocagem", "vegetacao", "grama alta", "gramado",
-            "praca suja", "area verde", "podar", "poda", "galhos", "restos de poda",
+            "entulho", "entulhos", "residuo", "residuos", "descarte irregular", "descarte de lixo",
+            "mato", "mato alto", "capina", "rocagem", "rocada", "vegetacao", "grama alta", "gramado",
+            "praca suja", "area verde", "podar", "poda", "galhos", "restos de poda", "restos de obra",
             "animal morto", "carcaca", "sujeira", "imundicia", "varricao", "varrer", "cacamba",
-            "cacambas", "descarte de entulho", "lixo acumulado", "foco de dengue", "mosquito"
+            "cacambas", "descarte de entulho", "lixo acumulado", "foco de dengue", "mosquito",
+            "coleta nao passou", "lixeira cheia", "lixeira transbordando", "saco de lixo", "resto de muro"
     );
 
     public static final List<String> VIARIO = List.of(
@@ -76,7 +111,8 @@ public final class TriagemKeywords {
             "pavimento afundado", "solado", "calçada", "calcada", "calcamento", "passeio",
             "meio fio", "meio-fio", "guia", "sarjeta", "irregularidade", "desnivel", "desnível",
             "trinca", "fissura", "remendo", "tapa buraco", "obra na via", "intervencao viaria",
-            "ciclovia", "ciclofaixa", "ponte", "pontilhao", "muro de arrimo", "talude",
+            "ciclovia", "ciclofaixa", "via obstruida", "obstrucao na via", "ponte", "pontilhao",
+            "muro de arrimo", "talude",
             "queda de barreira", "erosao", "erosão", "bueiro sem tampa", "tampa quebrada"
     );
 
@@ -100,6 +136,21 @@ public final class TriagemKeywords {
 
     /** Primeira categoria cuja lista de termos aparece no texto (ordem de especificidade). */
     public static CategoriaOcorrencia inferirCategoria(String textoNormalizado) {
+        if (contemAlguma(textoNormalizado, FRASES_ILUMINACAO)) {
+            return CategoriaOcorrencia.ILUMINACAO;
+        }
+        if (contemAlguma(textoNormalizado, FRASES_SANEAMENTO)) {
+            return CategoriaOcorrencia.SANEAMENTO;
+        }
+        if (contemAlguma(textoNormalizado, FRASES_TRANSITO)) {
+            return CategoriaOcorrencia.TRANSITO;
+        }
+        if (contemAlguma(textoNormalizado, FRASES_LIMPEZA)) {
+            return CategoriaOcorrencia.LIMPEZA;
+        }
+        if (contemAlguma(textoNormalizado, FRASES_VIARIO)) {
+            return CategoriaOcorrencia.VIARIO;
+        }
         for (CategoriaOcorrencia categoria : ORDEM_INFERENCIA) {
             if (textoIndicaCategoria(textoNormalizado, categoria)) {
                 return categoria;
@@ -139,14 +190,26 @@ public final class TriagemKeywords {
         if (contemAlguma(texto, List.of("buraco", "cratera", "tapa buraco"))) {
             return "Buraco na via";
         }
-        if (contemAlguma(texto, List.of("calcada", "passeio", "meio fio", "guia", "irregularidade"))) {
-            return "Calçada quebrada";
-        }
-        if (contemAlguma(texto, List.of("afundamento", "pavimento afundado", "asfalto cedendo", "cedendo"))) {
+        if (contemAlguma(texto, List.of("afundamento", "pavimento afundado", "asfalto cedendo", "cedendo", "irregular"))) {
             return "Pavimento afundado";
         }
-        if (contemAlguma(texto, List.of("entulho", "obra na via", "obstrucao"))) {
-            return "Lixo em via pública";
+        if (contemAlguma(texto, List.of("calcada", "passeio", "desnivel"))) {
+            return "Calçada quebrada";
+        }
+        if (contemAlguma(texto, List.of("meio fio", "guia", "sarjeta"))) {
+            return "Meio-fio ou guia danificada";
+        }
+        if (contemAlguma(texto, List.of("ciclovia", "ciclofaixa", "ciclista"))) {
+            return "Defeito em ciclovia ou ciclofaixa";
+        }
+        if (contemAlguma(texto, List.of("alagamento na via", "agua na rua", "enchente na via"))) {
+            return "Alagamento na via";
+        }
+        if (contemAlguma(texto, List.of(
+                "obstrucao", "bloqueio", "entulho na via", "galho", "objeto na via",
+                "arvore caida", "galho caido", "poste caido na via"
+        ))) {
+            return "Via obstruída";
         }
         return subcategoriaPadrao(CategoriaOcorrencia.VIARIO);
     }
@@ -155,8 +218,14 @@ public final class TriagemKeywords {
         if (contemAlguma(texto, List.of("piscando", "intermitente"))) {
             return "Lâmpada piscando";
         }
-        if (contemAlguma(texto, List.of("danificad", "inclinado", "torto", "quebrado", "caido"))) {
+        if (contemAlguma(texto, List.of("queimada", "queimado", "nao acende"))) {
+            return "Lâmpada queimada";
+        }
+        if (contemAlguma(texto, List.of("danificad", "inclinado", "torto", "quebrado", "caido", "fio exposto"))) {
             return "Poste danificado";
+        }
+        if (contemAlguma(texto, List.of("apagado", "escuro", "sem luz"))) {
+            return "Poste apagado";
         }
         return subcategoriaPadrao(CategoriaOcorrencia.ILUMINACAO);
     }
@@ -165,28 +234,63 @@ public final class TriagemKeywords {
         if (contemAlguma(texto, List.of("esgoto", "ceu aberto", "transbord", "mal cheiro", "mau cheiro"))) {
             return "Esgoto a céu aberto";
         }
-        if (contemAlguma(texto, List.of("bueiro", "boca de lobo", "grelha", "tampa"))) {
+        if (contemAlguma(texto, List.of("bueiro", "boca de lobo", "grelha", "tampa", "entupido"))) {
             return "Bueiro entupido";
+        }
+        if (contemAlguma(texto, List.of("falta de agua", "sem agua", "interrupcao"))) {
+            return "Falta de água";
+        }
+        if (contemAlguma(texto, List.of("alagamento", "drenagem", "agua parada"))) {
+            return "Alagamento por drenagem";
+        }
+        if (contemAlguma(texto, List.of("vazamento", "vazando"))) {
+            return "Vazamento de água";
         }
         return subcategoriaPadrao(CategoriaOcorrencia.SANEAMENTO);
     }
 
     private static String inferirSubcategoriaTransito(String texto) {
-        if (contemAlguma(texto, List.of("faixa de pedestre", "faixa apagada"))) {
+        if (contemAlguma(texto, List.of(
+                "placa caida", "placa no chao", "placa no solo", "placa tombada", "placa quebrada",
+                "placa danificada", "placa arrancada", "sinal caido", "sinal no chao", "sinal tombado",
+                "cone caido", "cone no chao", "cavalete caido", "barreira caida", "sinalizacao caida",
+                "tachao", "tacha", "placa de pare caida", "placa de transito caida"
+        ))) {
+            return "Placa ou sinal caído";
+        }
+        if (contemAlguma(texto, List.of("semaforo", "sinaleira", "amarelo piscando", "vermelho apagado"))) {
+            return "Semáforo defeituoso";
+        }
+        if (contemAlguma(texto, List.of("faixa de pedestre", "faixa apagada", "faixa sumiu"))) {
             return "Faixa de pedestre apagada";
         }
-        if (contemAlguma(texto, List.of("placa", "sinalizacao", "pare obrigatorio", "sinal apagado"))) {
-            return "Sinalização apagada";
+        if (contemAlguma(texto, List.of("lombada", "quebra molas", "redutor", "speed bump"))) {
+            return "Lombada irregular";
+        }
+        if (contemAlguma(texto, List.of("estacionado", "interdicao", "bloqueio da via", "veiculo na via"))) {
+            return "Obstrução ao trânsito";
+        }
+        if (contemAlguma(texto, List.of("placa", "sinalizacao", "pare obrigatorio", "sinal apagado", "placa apagada"))) {
+            return "Sinalização apagada ou danificada";
         }
         return subcategoriaPadrao(CategoriaOcorrencia.TRANSITO);
     }
 
     private static String inferirSubcategoriaLimpeza(String texto) {
+        if (contemAlguma(texto, List.of("animal morto", "carcaca"))) {
+            return "Animal morto na via";
+        }
+        if (contemAlguma(texto, List.of("coleta", "nao passou", "lixeira cheia"))) {
+            return "Coleta de lixo não realizada";
+        }
         if (contemAlguma(texto, List.of("mato", "grama alta", "capina", "praca", "vegetacao"))) {
-            return "Mato alto em praça";
+            return "Mato alto em praça ou via";
         }
         if (contemAlguma(texto, List.of("entulho", "obra", "construcao", "cacamba"))) {
             return "Entulho abandonado";
+        }
+        if (contemAlguma(texto, List.of("lixo", "sujeira", "acumulado"))) {
+            return "Lixo acumulado";
         }
         return subcategoriaPadrao(CategoriaOcorrencia.LIMPEZA);
     }

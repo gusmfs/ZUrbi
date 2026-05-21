@@ -26,6 +26,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(corpo(HttpStatus.BAD_REQUEST.value(), ex.getMessage()));
     }
 
+    @ExceptionHandler(OllamaIndisponivelException.class)
+    public ResponseEntity<Map<String, Object>> ollamaIndisponivel(OllamaIndisponivelException ex) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(corpo(HttpStatus.SERVICE_UNAVAILABLE.value(), ex.getMessage()));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> validacao(MethodArgumentNotValidException ex) {
         String mensagem = ex.getBindingResult().getFieldErrors().stream()

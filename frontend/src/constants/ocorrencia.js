@@ -9,21 +9,47 @@ export const CATEGORIAS = [
   { value: 'LIMPEZA', label: 'Limpeza urbana' },
 ];
 
+/**
+ * Tipos de problema por categoria — distintos entre si (sem duplicar lixo/entulho em Viário e Limpeza).
+ */
 export const SUBCATEGORIAS_POR_CATEGORIA = {
   VIARIO: [
     'Buraco na via',
-    'Calçada quebrada',
-    'Lixo em via pública',
     'Pavimento afundado',
+    'Calçada quebrada',
+    'Meio-fio ou guia danificada',
+    'Via obstruída',
+    'Defeito em ciclovia ou ciclofaixa',
+    'Alagamento na via',
   ],
-  ILUMINACAO: ['Poste apagado', 'Lâmpada piscando', 'Poste danificado'],
-  SANEAMENTO: ['Vazamento de água', 'Esgoto a céu aberto', 'Bueiro entupido'],
+  ILUMINACAO: [
+    'Poste apagado',
+    'Lâmpada queimada',
+    'Lâmpada piscando',
+    'Poste danificado',
+  ],
+  SANEAMENTO: [
+    'Vazamento de água',
+    'Esgoto a céu aberto',
+    'Bueiro entupido',
+    'Falta de água',
+    'Alagamento por drenagem',
+  ],
   TRANSITO: [
     'Semáforo defeituoso',
-    'Sinalização apagada',
+    'Placa ou sinal caído',
+    'Sinalização apagada ou danificada',
     'Faixa de pedestre apagada',
+    'Lombada irregular',
+    'Obstrução ao trânsito',
   ],
-  LIMPEZA: ['Entulho abandonado', 'Mato alto em praça', 'Lixo acumulado'],
+  LIMPEZA: [
+    'Lixo acumulado',
+    'Entulho abandonado',
+    'Mato alto em praça ou via',
+    'Coleta de lixo não realizada',
+    'Animal morto na via',
+  ],
 };
 
 export const URGENCIAS = [

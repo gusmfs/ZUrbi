@@ -62,3 +62,24 @@ export function contarPorStatus(ocorrencias) {
   }
   return map;
 }
+
+/** KPIs da home pública (chamados ativos, alinhado ao backend). */
+export function calcularEstatisticasPublicas(ocorrencias) {
+  const porStatus = contarPorStatus(
+    ocorrencias.filter((o) => o.status !== 'CANCELADO')
+  );
+  return {
+    total: Object.values(porStatus).reduce((s, n) => s + n, 0),
+    emAnalise: (porStatus.RECEBIDO || 0) + (porStatus.EM_ANALISE || 0),
+    emAndamento:
+      (porStatus.EM_ANDAMENTO || 0) + (porStatus.ENCAMINHADO_EMERGENCIA || 0),
+    resolvidos: porStatus.CONCLUIDO || 0,
+  };
+}
+
+export function badgeClassStatus(status) {
+  if (status === 'CONCLUIDO') return 'success';
+  if (status === 'EM_ANDAMENTO' || status === 'ENCAMINHADO_EMERGENCIA') return 'primary';
+  if (status === 'CANCELADO') return 'secondary';
+  return 'warning';
+}

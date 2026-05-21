@@ -7,28 +7,33 @@ export default function Footer() {
       <div className="container">
         <div className="footer-content">
           <div className="footer-section">
-            <h4>Sobre zUrbi</h4>
+            <h4>zUrbi · Porto Seguro</h4>
             <p>
-              zUrbi é uma plataforma colaborativa onde cidadãos reportam problemas urbanos. Juntos, melhoramos nossas cidades.
+              Canal oficial da Prefeitura Municipal de Porto Seguro para registro e
+              acompanhamento de demandas urbanas. Sua participação ajuda a cuidar da cidade.
             </p>
           </div>
           <div className="footer-section">
-            <h4>Links Rápidos</h4>
+            <h4>Links rápidos</h4>
             <ul>
               <li><Link to="/">Início</Link></li>
-              <li><Link to="/mapa">Mapa</Link></li>
-              <li><Link to="/analise">Análise</Link></li>
+              <li><Link to="/registrar">Abrir chamado</Link></li>
+              <li><Link to="/acompanhar">Acompanhar</Link></li>
+              <li><Link to="/ia">IA no zUrbi</Link></li>
               <li><Link to="/contato">Contato</Link></li>
             </ul>
           </div>
           <div className="footer-section">
-            <h4>Contato</h4>
-            <p>Email: contato@zurbi.gov.br</p>
-            <p>Tel: (11) 3000-0000</p>
+            <h4>Prefeitura</h4>
+            <p>Porto Seguro — Bahia</p>
+            <p>Atendimento: ouvidoria@portoseguro.ba.gov.br</p>
           </div>
         </div>
         <div className="footer-bottom">
-          <p>&copy; 2026 zUrbi. Todos os direitos reservados.</p>
+          <p className="footer-credit">
+            &copy; {new Date().getFullYear()} Prefeitura Municipal de Porto Seguro. Plataforma zUrbi.
+          </p>
+          <p className="footer-credit-sub">Serviço público digital para o cidadão.</p>
         </div>
       </div>
     </footer>

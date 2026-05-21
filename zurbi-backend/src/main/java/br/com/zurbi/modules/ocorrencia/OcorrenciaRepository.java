@@ -44,4 +44,17 @@ public interface OcorrenciaRepository extends JpaRepository<Ocorrencia, UUID> {
             WHERE protocolo ~ ('^ZUR-' || CAST(:ano AS TEXT) || '-[0-9]+$')
             """, nativeQuery = true)
     int maiorSequencialPorAno(@Param("ano") int ano);
+
+    @Query("""
+            SELECT o FROM Ocorrencia o
+            LEFT JOIN FETCH o.orgaoResponsavel
+            WHERE o.status NOT IN ('CONCLUIDO', 'CANCELADO')
+            ORDER BY
+              CASE o.urgencia WHEN 'ALTA' THEN 0 WHEN 'MEDIA' THEN 1 ELSE 2 END,
+              o.criadoEm DESC
+            """)
+    List<Ocorrencia> listarAtivasParaAssistente();
+
+    @Query("SELECT o.status, COUNT(o) FROM Ocorrencia o GROUP BY o.status")
+    List<Object[]> contarAgrupadoPorStatus();
 }

@@ -101,29 +101,6 @@
   gap: 10px;
 }
 
-.cia-header-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--cia-muted);
-}
-
-.cia-status-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--cia-success);
-  flex-shrink: 0;
-}
-
-.cia-header-count {
-  font-size: 0.8125rem;
-  color: var(--cia-muted);
-  font-variant-numeric: tabular-nums;
-}
-
 .cia-btn-ghost,
 .cia-btn-primary {
   border: none;
