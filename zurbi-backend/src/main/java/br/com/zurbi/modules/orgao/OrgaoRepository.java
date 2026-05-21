@@ -12,4 +12,6 @@ public interface OrgaoRepository extends JpaRepository<Orgao, UUID> {
     Optional<Orgao> findFirstByCategoriasAtendidasContaining(CategoriaOcorrencia categoria);
 
     List<Orgao> findByCategoriasAtendidasContaining(CategoriaOcorrencia categoria);
+
+    Optional<Orgao> findBySigla(String sigla);
 }

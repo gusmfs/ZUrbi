@@ -26,6 +26,7 @@ import java.time.Year;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -109,7 +110,8 @@ public class OcorrenciaService {
             String bairro
     ) {
         String bairroNorm = normalizarBairro(bairro);
-        return ocorrenciaRepository.buscarPorFiltros(usuarioId, status, categoria, bairroNorm).stream()
+        boolean filtrarBairro = bairroNorm != null;
+        return ocorrenciaRepository.buscarPorFiltros(usuarioId, status, categoria, filtrarBairro, bairroNorm).stream()
                 .map(this::paraResumo)
                 .toList();
     }
@@ -134,6 +136,52 @@ public class OcorrenciaService {
         ocorrenciaRepository.save(o);
 
         return buscarPorId(id);
+    }
+
+    @Transactional
+    public OcorrenciaResponseDTO atualizarOrgao(UUID id, UUID orgaoId, String observacao) {
+        Ocorrencia o = ocorrenciaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ocorrência não encontrada."));
+
+        if (o.getStatus() == StatusOcorrencia.CANCELADO) {
+            throw new IllegalArgumentException("Não é possível alterar órgão de ocorrência cancelada.");
+        }
+
+        UUID orgaoAnteriorId = o.getOrgaoResponsavel() != null ? o.getOrgaoResponsavel().getId() : null;
+        if (Objects.equals(orgaoAnteriorId, orgaoId)) {
+            return buscarPorId(id);
+        }
+
+        Orgao orgaoNovo = null;
+        if (orgaoId != null) {
+            orgaoNovo = orgaoRepository.findById(orgaoId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Órgão não encontrado."));
+        }
+
+        o.setOrgaoResponsavel(orgaoNovo);
+        ocorrenciaRepository.save(o);
+
+        StatusOcorrencia status = o.getStatus();
+        String obs = montarObservacaoOrgao(orgaoNovo, observacao);
+        atualizacaoStatusRepository.save(AtualizacaoStatus.builder()
+                .ocorrencia(o)
+                .statusAnterior(status)
+                .statusNovo(status)
+                .observacao(obs)
+                .build());
+
+        return buscarPorId(id);
+    }
+
+    private static String montarObservacaoOrgao(Orgao orgaoNovo, String observacaoGestor) {
+        String base = orgaoNovo == null
+                ? "Órgão removido na fila de triagem (Kanban)"
+                : "Encaminhado para " + (orgaoNovo.getSigla() != null ? orgaoNovo.getSigla() : orgaoNovo.getNome())
+                + " via fila Kanban";
+        if (observacaoGestor != null && !observacaoGestor.isBlank()) {
+            return base + " | " + observacaoGestor.trim();
+        }
+        return base;
     }
 
     private String gerarProtocolo() {

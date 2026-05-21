@@ -2,6 +2,7 @@ package br.com.zurbi.modules.ocorrencia;
 
 import br.com.zurbi.modules.ocorrencia.dto.OcorrenciaRequestDTO;
 import br.com.zurbi.modules.ocorrencia.dto.OcorrenciaResponseDTO;
+import br.com.zurbi.modules.ocorrencia.dto.OcorrenciaOrgaoPatchDTO;
 import br.com.zurbi.modules.ocorrencia.dto.OcorrenciaStatusPatchDTO;
 import br.com.zurbi.shared.enums.CategoriaOcorrencia;
 import br.com.zurbi.shared.enums.StatusOcorrencia;
@@ -53,5 +54,13 @@ public class OcorrenciaController {
             @Valid @RequestBody OcorrenciaStatusPatchDTO dto
     ) {
         return ocorrenciaService.atualizarStatus(id, dto.statusNovo(), dto.observacao());
+    }
+
+    @PatchMapping("/{id}/orgao")
+    public OcorrenciaResponseDTO atualizarOrgao(
+            @PathVariable UUID id,
+            @RequestBody OcorrenciaOrgaoPatchDTO dto
+    ) {
+        return ocorrenciaService.atualizarOrgao(id, dto.orgaoId(), dto.observacao());
     }
 }

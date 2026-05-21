@@ -78,6 +78,15 @@
   text-decoration: none;
 }
 
+.nav-link-ops {
+  font-weight: 600;
+  color: var(--label-primary);
+}
+
+.nav-link-ops:hover {
+  color: var(--system-blue);
+}
+
 @media (max-width: 768px) {
   .header-top-content {
     flex-wrap: wrap;

@@ -328,3 +328,72 @@
     width: 100%;
   }
 }
+
+.ocorrencia-ia-loading {
+  color: var(--zurbi-blue-dark, #003366);
+  font-size: 0.9rem;
+  margin: 0 0 var(--spacing);
+}
+
+.ocorrencia-ia-card {
+  background: linear-gradient(135deg, rgba(42, 127, 214, 0.08), rgba(53, 181, 106, 0.06));
+  border: 1px solid rgba(42, 127, 214, 0.25);
+  border-radius: 12px;
+  padding: calc(var(--spacing) * 2);
+  margin-bottom: calc(var(--spacing) * 2);
+}
+
+.ocorrencia-ia-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ocorrencia-ia-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--zurbi-blue-dark, #003366);
+}
+
+.ocorrencia-ia-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(42, 127, 214, 0.15);
+  color: var(--zurbi-blue-dark, #003366);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.ocorrencia-ia-orgao {
+  font-size: 0.9rem;
+  margin: 0 0 10px;
+}
+
+.ocorrencia-ia-motivos {
+  margin: 0 0 8px;
+  padding-left: 1.2rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary, #555);
+}
+
+.ocorrencia-ia-motivos li {
+  margin-bottom: 4px;
+}
+
+.ocorrencia-ia-hint {
+  margin: 0;
+}
+
+.alert-warning {
+  background: rgba(217, 119, 6, 0.1);
+  border: 1px solid #d97706;
+  color: #92400e;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: var(--spacing);
+  font-size: 0.875rem;
+}

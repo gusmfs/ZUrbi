@@ -12,7 +12,49 @@ MinIO:    http://localhost:9001 / minioadmin / minioadmin
 docker compose up postgres minio -d   # start infra
 docker compose ps                     # confirm "healthy"
 mvn spring-boot:run                   # start app
-# Look for: "Started ZurbiApplication" + Flyway V1, V2, V3 applied
+# Look for: "Started ZurbiApplication" + Flyway V1–V4 applied
+```
+
+---
+
+## Seed demo Porto Seguro (V4)
+
+A migração `V4__seed_porto_seguro.sql` insere dados de demonstração:
+
+- 12 cidadãos + 1 gestor (senha dev: `senha123`)
+- 5 órgãos com categorias de atendimento
+- **50 ocorrências** em Porto Seguro (BA), 15 bairros, protocolos `ZUR-2026-0001` … `ZUR-2026-0050`
+- Histórico de status em `tb_atualizacao_status`
+
+**Reset do banco** (aplica V4 do zero):
+
+```bash
+docker compose down -v
+docker compose up --build -d
+```
+
+**Consultas rápidas:**
+
+```bash
+# Listar todas (50)
+curl http://localhost:8080/api/ocorrencias
+
+# Filtrar por bairro
+curl "http://localhost:8080/api/ocorrencias?bairro=Centro"
+curl "http://localhost:8080/api/ocorrencias?bairro=Tancredo%20Neves"
+
+# Filtrar por categoria e status
+curl "http://localhost:8080/api/ocorrencias?categoria=ILUMINACAO&status=RECEBIDO"
+
+# Detalhe com histórico
+curl http://localhost:8080/api/ocorrencias/c3000001-0000-4000-8000-000000000001
+```
+
+**SQL (container `zurbi-db`):**
+
+```bash
+docker exec zurbi-db psql -U zurbi_user -d zurbi_db -c "SELECT COUNT(*) FROM tb_ocorrencia;"
+docker exec zurbi-db psql -U zurbi_user -d zurbi_db -c "SELECT bairro, COUNT(*) FROM tb_ocorrencia GROUP BY bairro ORDER BY 2 DESC;"
 ```
 
 ---
@@ -91,6 +133,31 @@ curl "http://localhost:8080/api/ocorrencias?status=EM_ANALISE"
 curl "http://localhost:8080/api/ocorrencias?categoria=VIARIO&bairro=Bela%20Vista"
 curl "http://localhost:8080/api/ocorrencias?usuarioId=<USUARIO_ID>"
 ```
+
+### 8. Triagem automática (Fase 1)
+
+Chamados do seed **sem órgão** e ainda ativos: `ZUR-2026-0040`, `ZUR-2026-0046` (LIMPEZA, `EM_ANALISE`).
+
+```bash
+# Consultar sugestão (somente leitura)
+curl http://localhost:8080/api/ocorrencias/c3000001-0000-4000-8000-000000000040/triagem
+
+# Aplicar encaminhamento (persiste orgao + histórico)
+curl -X POST http://localhost:8080/api/ocorrencias/c3000001-0000-4000-8000-000000000040/triagem/aplicar \
+  -H "Content-Type: application/json" \
+  -d '{"observacaoGestor": "Confirmado na Central de Operações"}'
+
+# Conferir detalhe após aplicar
+curl http://localhost:8080/api/ocorrencias/c3000001-0000-4000-8000-000000000040
+```
+
+Exemplo ILUMINACAO → CIP:
+
+```bash
+curl http://localhost:8080/api/ocorrencias/c3000001-0000-4000-8000-000000000011/triagem
+```
+
+Emergência (termos na descrição) → DCM e status `ENCAMINHADO_EMERGENCIA` quando status permitir alteração.
 
 ---
 

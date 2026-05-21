@@ -20,9 +20,10 @@ export default function Header() {
               </Link>
             </div>
             <nav className="header-nav">
-              <Link to="/mapa" className="nav-link">Mapa de Problemas</Link>
+              <Link to="/registrar" className="nav-link">Abrir chamado</Link>
               <Link to="/acompanhar" className="nav-link">Acompanhar</Link>
               <Link to="/analise" className="nav-link">Análise</Link>
+              <Link to="/central-ia" className="nav-link nav-link-ops">Operações</Link>
               {user && user.role === 'admin' && (
                 <Link to="/admin" className="nav-link">Admin</Link>
               )}
@@ -41,7 +42,7 @@ export default function Header() {
                     Entrar
                   </Link>
                   <Link to="/registrar" className="btn btn-primary btn-sm">
-                    Registrar
+                    Abrir chamado
                   </Link>
                 </div>
               )}

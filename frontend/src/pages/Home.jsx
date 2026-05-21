@@ -22,8 +22,8 @@ export default function Home() {
             <p className="hero-subtitle">
               Transformando a cidade através de você. Reporte problemas urbanos como buracos nas ruas, faixas interceptadas e infraestrutura danificada.
             </p>
-            <Link to="/mapa" className="btn btn-primary btn-lg">
-              Reportar Problema
+            <Link to="/registrar" className="btn btn-primary btn-lg">
+              Abrir chamado
             </Link>
           </div>
         </div>
@@ -104,8 +104,8 @@ export default function Home() {
           ) : (
             <div className="empty-state">
               <p>Nenhum relato ainda. Seja o primeiro a reportar um problema!</p>
-              <Link to="/mapa" className="btn btn-primary">
-                Reportar Agora
+              <Link to="/registrar" className="btn btn-primary">
+                Abrir chamado
               </Link>
             </div>
           )}

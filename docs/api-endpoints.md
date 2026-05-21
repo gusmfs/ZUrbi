@@ -41,6 +41,37 @@ Base URL: `http://localhost:8080/api`
 | GET | `/ocorrencias/{id}` | — | `200 OcorrenciaResponseDTO` |
 | GET | `/ocorrencias` | query params | `200 List<OcorrenciaResponseDTO>` |
 | PATCH | `/ocorrencias/{id}/status` | `{ status, observacao }` | `200 OcorrenciaResponseDTO` |
+| PATCH | `/ocorrencias/{id}/orgao` | `{ orgaoId?, observacao? }` | `200 OcorrenciaResponseDTO` |
+| GET | `/ocorrencias/{id}/triagem` | — | `200 TriagemResponseDTO` |
+| POST | `/ocorrencias/{id}/triagem/aplicar` | `{ observacaoGestor? }` | `200 OcorrenciaResponseDTO` |
+
+### Triagem (pré-registro — abertura de chamado)
+
+| Método | Path | Body | Response |
+|--------|------|------|----------|
+| POST | `/triagem/classificar` | `{ descricao, riscoAcidente?, recorrente? }` | `200 TriagemClassificacaoResponseDTO` |
+
+Retorna `categoria`, `subcategoria`, `urgenciaSugerida`, `orgaoId`, `orgaoNome`, `orgaoSigla`, `confianca`, `motivos`, `emergencia` (sem persistir ocorrência).
+
+**TriagemResponseDTO**
+```json
+{
+  "ocorrenciaId": "uuid",
+  "protocolo": "ZUR-2026-0040",
+  "orgaoId": "uuid",
+  "orgaoNome": "Secretaria de Limpeza Urbana",
+  "orgaoSigla": "SLU",
+  "statusAtual": "EM_ANALISE",
+  "statusSugerido": "EM_ANALISE",
+  "prioridadeScore": 65,
+  "confianca": 88,
+  "motivos": ["Categoria Limpeza mapeada ao órgão SLU (SLU)."],
+  "requerRevisaoHumana": false,
+  "alinhadoComOrgaoAtual": false
+}
+```
+
+**POST /triagem/aplicar** — body opcional; persiste órgão sugerido, atualiza status quando aplicável e grava histórico. Retorna `400` se cancelada ou sem órgão sugerido.
 
 **POST multipart/form-data fields**
 ```

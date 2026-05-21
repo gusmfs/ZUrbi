@@ -9,11 +9,12 @@ export default function Login() {
   const handleGovBrLogin = () => {
     // Simulating Gov.br OAuth login success
     const mockUser = {
-      id: 'govbr-' + Date.now(),
-      name: 'Cidadão Exemplo',
+      id: 'a1000001-0000-4000-8000-000000000001',
+      usuarioId: 'a1000001-0000-4000-8000-000000000001',
+      name: 'Maria Silva',
       role: 'user',
       cpf: '***.***.***-**',
-      provider: 'gov.br'
+      provider: 'gov.br',
     };
     
     login(mockUser);
