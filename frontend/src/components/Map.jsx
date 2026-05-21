@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import { MAPA_PORTO_SEGURO } from '../constants/ocorrencia';
 import './Map.css';
 
 const mapContainerStyle = {
@@ -7,17 +8,9 @@ const mapContainerStyle = {
   height: '100%',
 };
 
-const defaultCenter = {
-  lat: -23.5505,
-  lng: -46.6333,
-};
-
-const mapBounds = {
-  north: -23.38,
-  south: -23.80,
-  east: -46.27,
-  west: -46.97,
-};
+const defaultCenter = MAPA_PORTO_SEGURO.center;
+const mapBounds = MAPA_PORTO_SEGURO.bounds;
+const defaultZoom = MAPA_PORTO_SEGURO.zoom;
 
 const selectedLocationIcon = {
   path: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z',
@@ -53,13 +46,50 @@ export default function Map({ onLocationSelect, selectedLocation, problems }) {
     mapRef.current = map;
   }, []);
 
+  if (!apiKey || apiKey === 'undefined') {
+    return (
+      <div className="map-container map-container--unconfigured">
+        <div className="map-setup-hint">
+          <h3>Mapa não configurado</h3>
+          <p>
+            É necessária uma chave da <strong>Maps JavaScript API</strong> do Google Cloud.
+          </p>
+          <ol>
+            <li>
+              Acesse{' '}
+              <a
+                href="https://console.cloud.google.com/google/maps-apis"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Google Cloud Console → Maps
+              </a>
+            </li>
+            <li>Crie um projeto e ative <strong>Maps JavaScript API</strong></li>
+            <li>Em Credenciais, crie uma chave de API (restrita por HTTP referrer)</li>
+            <li>
+              No arquivo <code>frontend/.env.local</code>, adicione:
+              <pre>VITE_GOOGLE_MAPS_API_KEY=sua_chave_aqui</pre>
+            </li>
+            <li>Reinicie o frontend (<code>npm run dev</code>)</li>
+          </ol>
+          <p className="map-setup-hint__note">
+            Em desenvolvimento, libere os referrers: <code>http://localhost:5173/*</code> e{' '}
+            <code>http://127.0.0.1:5173/*</code>. O faturamento precisa estar ativo no projeto
+            (há crédito gratuito mensal do Google).
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="map-container">
       <LoadScript googleMapsApiKey={apiKey} language="pt-BR">
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           center={defaultCenter}
-          zoom={13}
+          zoom={defaultZoom}
           onClick={handleMapClick}
           onLoad={onMapLoad}
           restriction={{
@@ -121,7 +151,7 @@ export default function Map({ onLocationSelect, selectedLocation, problems }) {
         </GoogleMap>
       </LoadScript>
       <div className="map-instructions">
-        <p>💡 Clique no mapa para marcar a localização do problema</p>
+        <p>Clique no mapa para marcar onde está o problema (Porto Seguro)</p>
       </div>
     </div>
   );

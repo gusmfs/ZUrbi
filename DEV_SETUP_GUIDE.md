@@ -51,10 +51,11 @@ Esperado: `200 OK`
    - Password: `zurbi_pass`
    - Database: `zurbi_db`
 4. Teste a conexão
-5. Abra `flyway_schema_history` — deve mostrar 3 migrações executadas:
+5. Abra `flyway_schema_history` — deve mostrar 4 migrações executadas:
    - `V1__create_tables`
    - `V2__seed_data`
    - `V3__create_midia_table`
+   - `V4__seed_porto_seguro` (50 ocorrências demo em Porto Seguro)
 
 **Via linha de comando**
 
@@ -90,6 +91,37 @@ curl -X POST http://localhost:8080/api/usuarios \
 ```
 
 Esperado: resposta com `id`, `nome`, `email`, `tipo`, `criadoEm`
+
+---
+
+## Seed demo Porto Seguro (dados para IA / ciência de dados)
+
+A migração **V4** popula o banco com 50 chamados simulados na cidade de **Porto Seguro (BA)** — bairros reais, coordenadas GPS, categorias variadas e histórico de status.
+
+| Item | Valor |
+|------|--------|
+| Ocorrências | 50 (`ZUR-2026-0001` … `0050`) |
+| Bairros | 15 (Centro, Tancredo Neves, Cambolo, etc.) |
+| Usuários demo | 12 cidadãos + 1 gestor |
+| Senha dev dos cidadãos | `senha123` |
+| Órgãos | 5 (Obras, Iluminação, Saneamento, Limpeza, Defesa Civil) |
+
+```bash
+# Listar ocorrências via API
+curl http://localhost:8080/api/ocorrencias
+curl "http://localhost:8080/api/ocorrencias?bairro=Centro"
+```
+
+Para **reaplicar o seed** (banco limpo):
+
+```bash
+docker compose down -v
+docker compose up --build -d
+```
+
+> **Atenção:** `V4` é para desenvolvimento/demo — não usar em produção.
+
+Regenerar o SQL (opcional): `python scripts/generate_v4_seed.py`
 
 ---
 

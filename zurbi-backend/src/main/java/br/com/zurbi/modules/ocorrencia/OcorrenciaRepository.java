@@ -27,17 +27,14 @@ public interface OcorrenciaRepository extends JpaRepository<Ocorrencia, UUID> {
             WHERE (:usuarioId IS NULL OR o.usuario.id = :usuarioId)
             AND (:status IS NULL OR o.status = :status)
             AND (:categoria IS NULL OR o.categoria = :categoria)
-            AND (
-                :bairro IS NULL
-                OR TRIM(:bairro) = ''
-                OR LOWER(TRIM(o.bairro)) = LOWER(TRIM(:bairro))
-            )
+            AND (:filtrarBairro = false OR LOWER(o.bairro) = LOWER(:bairro))
             ORDER BY o.criadoEm DESC
             """)
     List<Ocorrencia> buscarPorFiltros(
             @Param("usuarioId") UUID usuarioId,
             @Param("status") StatusOcorrencia status,
             @Param("categoria") CategoriaOcorrencia categoria,
+            @Param("filtrarBairro") boolean filtrarBairro,
             @Param("bairro") String bairro
     );
 

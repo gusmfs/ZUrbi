@@ -1,5 +1,12 @@
 /* Apple Design System Colors & Variables */
 :root {
+  /* zUrbi — cores da logo */
+  --zurbi-blue: #2A7FD6;
+  --zurbi-yellow: #F0B429;
+  --zurbi-green: #35B56A;
+  --zurbi-blue-dark: #003366;
+  --zurbi-green-dark: #00AA44;
+
   --system-blue: #007AFF;
   --system-blue-dark: #005bb5;
   --system-green: #34C759;
