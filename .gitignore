@@ -1,8 +1,8 @@
-<<<<<<< HEAD
+# Dependências e build frontend
 node_modules/
 .vite/
 dist/
-=======
+
 # Credenciais e configurações locais
 .env
 .env.local
@@ -21,4 +21,3 @@ zurbi-backend/target/
 
 .claudeignore
 .CLAUDE.md
->>>>>>> main
