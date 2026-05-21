@@ -24,6 +24,7 @@ import CentralIAKanban from '../components/centralia/CentralIAKanban';
 import CentralIAMapa from '../components/centralia/CentralIAMapa';
 
 import CentralIADetalhe from '../components/centralia/CentralIADetalhe';
+import CentralIAAssistente from '../components/centralia/CentralIAAssistente';
 
 import { listarOcorrencias, buscarOcorrencia } from '../services/ocorrencias';
 
@@ -47,7 +48,7 @@ import {
 
 } from '../utils/centralIa';
 
-import { filaKanbanAtiva } from '../utils/kanbanTriagem';
+import { contarSemOrgaoNaFila, filaKanbanAtiva } from '../utils/kanbanTriagem';
 
 import { ZURBI_BRAND, chartColorByIndex } from '../constants/brandColors';
 
@@ -385,7 +386,7 @@ export default function CentralIA() {
 
     const pendentes = (porStatus.RECEBIDO || 0) + (porStatus.EM_ANALISE || 0);
 
-    const semOrgao = ocorrencias.filter((o) => !o.orgaoId && o.status !== 'CANCELADO').length;
+    const semOrgao = contarSemOrgaoNaFila(ocorrencias);
 
     const alta = ocorrencias.filter((o) => o.urgencia === 'ALTA').length;
 
@@ -553,20 +554,6 @@ export default function CentralIA() {
 
         <div className="cia-header-meta">
 
-          <div className="cia-header-status">
-
-            <span className="cia-status-indicator" aria-hidden />
-
-            <span>Sistema operacional</span>
-
-          </div>
-
-          {!loading && (
-
-            <span className="cia-header-count">{kpis.total} chamados no painel</span>
-
-          )}
-
           <button type="button" className="cia-btn-ghost" onClick={carregar} disabled={loading}>
 
             Atualizar dados
@@ -662,7 +649,7 @@ export default function CentralIA() {
 
               <strong className="cia-kpi-value">{loading ? '—' : kpis.semOrgao}</strong>
 
-              <span className="cia-kpi-hint">Aguardando encaminhamento</span>
+              <span className="cia-kpi-hint">Na fila operacional (mesmo critério do Kanban)</span>
 
             </article>
 
@@ -1033,6 +1020,8 @@ export default function CentralIA() {
         />
 
       )}
+
+      <CentralIAAssistente />
 
     </div>
 
