@@ -7,6 +7,11 @@ export function filaKanbanAtiva(ocorrencias) {
   return ocorrencias.filter((o) => !STATUS_FORA_DA_FILA.has(o.status));
 }
 
+/** Sem órgão na mesma base do Kanban (não inclui concluídos/cancelados). */
+export function contarSemOrgaoNaFila(ocorrencias) {
+  return filaKanbanAtiva(ocorrencias).filter((o) => !o.orgaoId).length;
+}
+
 export function ordenarCardsKanban(a, b) {
   const ua = ORDEM_URGENCIA[a.urgencia] ?? 9;
   const ub = ORDEM_URGENCIA[b.urgencia] ?? 9;
