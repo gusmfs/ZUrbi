@@ -167,6 +167,23 @@ Navigate to `zurbi-midias` bucket → `ocorrencias/` → confirm file exists.
 
 ---
 
+## Assistente Ollama (Central de Operações)
+
+1. Instale o [Ollama](https://ollama.com) e execute:
+   ```bash
+   ollama serve
+   ollama pull llama3.2
+   ```
+2. Com o backend no Docker (Windows), use `ZURBI_OLLAMA_BASE_URL=http://host.docker.internal:11434` no `.env` ou deixe o padrão do `docker-compose.yml`.
+3. Opcional — Ollama no Compose: `docker compose --profile ai up -d` e `ZURBI_OLLAMA_BASE_URL=http://ollama:11434`.
+4. Abra `/central-ia`, clique em **Assistente** (canto inferior direito) e pergunte, por exemplo: *O que priorizar na fila?*
+5. Selecione um chamado na fila — o contexto inclui protocolo e sugestão de triagem.
+
+`GET /api/assistente/status` — verifica se o Ollama responde.  
+`POST /api/assistente/chat` — envia mensagem com contexto da fila atualizada do banco.
+
+---
+
 ## Common errors
 
 | Error | Cause | Fix |
@@ -178,3 +195,4 @@ Navigate to `zurbi-midias` bucket → `ocorrencias/` → confirm file exists.
 | `404` on ocorrencia POST | No Orgao for that categoria | Create Orgao first (step 1) |
 | `415` on multipart POST | Missing `;type=application/json` on dados field | Add content type to -F dados |
 | Port 8080 in use | Another instance running | Kill process or change port |
+| Assistente 503 | Ollama offline ou URL errada | `ollama serve`, `ollama pull llama3.2`, conferir `ZURBI_OLLAMA_BASE_URL` |
