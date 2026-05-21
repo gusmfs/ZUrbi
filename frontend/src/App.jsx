@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
 import AnaliseDesempenho from './pages/AnaliseDesempenho';
 import CentralIA from './pages/CentralIA';
+import ApresentacaoIA from './pages/ApresentacaoIA';
 import Login from './pages/Login';
 import './styles/apple.css';
 import './App.css';
@@ -22,6 +23,8 @@ function App() {
           <Route path="/acompanhar" element={<Dashboard />} />
           <Route path="/analise" element={<AnaliseDesempenho />} />
           <Route path="/central-ia" element={<CentralIA />} />
+          <Route path="/ia" element={<ApresentacaoIA />} />
+          <Route path="/inteligencia-artificial" element={<ApresentacaoIA />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<div style={{ textAlign: 'center', padding: '60px 20px' }}>
