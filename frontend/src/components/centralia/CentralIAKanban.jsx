@@ -61,6 +61,7 @@ function KanbanCard({
       <button
         type="button"
         className="cia-kanban-card"
+        aria-label={`Abrir chamado ${ocorrencia.protocolo}, ${ocorrencia.subcategoria}, ${ocorrencia.bairro}`}
         onClick={() => {
           if (!arrastou.current) onOpen(ocorrencia.id);
         }}

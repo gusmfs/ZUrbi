@@ -34,9 +34,11 @@ export default function Login() {
           </div>
           
           <div className="login-actions">
-            <button 
-              className="btn btn-govbr" 
+            <button
+              type="button"
+              className="btn btn-govbr"
               onClick={handleGovBrLogin}
+              aria-label="Entrar com conta gov.br"
             >
               <img src="https://ajuda.gov.br/interface/padrao-govbr/images/govbr-logo-large.png" alt="Gov.br" className="govbr-icon" onError={(e) => e.target.style.display='none'} />
               Entrar com gov.br

@@ -27,10 +27,12 @@ function App() {
           <Route path="/inteligencia-artificial" element={<ApresentacaoIA />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/login" element={<Login />} />
-          <Route path="*" element={<div style={{ textAlign: 'center', padding: '60px 20px' }}>
-            <h1>Página não encontrada</h1>
-            <p>A página que você está procurando não existe.</p>
-          </div>} />
+          <Route path="*" element={
+            <div style={{ textAlign: 'center', padding: '60px 20px' }} role="alert">
+              <h1>Página não encontrada</h1>
+              <p>A página que você está procurando não existe.</p>
+            </div>
+          } />
         </Routes>
       </Layout>
     </Router>

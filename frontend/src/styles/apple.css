@@ -20,7 +20,7 @@
   --system-gray-6: #F2F2F7;
   
   --label-primary: #1C1C1E;
-  --label-secondary: #8E8E93;
+  --label-secondary: #636366;
   --label-tertiary: #C7C7CC;
   
   --spacing: 8px;
@@ -193,6 +193,14 @@ select:focus {
   background-color: var(--system-background);
   border-color: var(--system-blue);
   box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  box-shadow:
+    0 0 0 2px var(--system-background, #fff),
+    0 0 0 5px var(--system-blue, #007aff);
 }
 
 textarea {

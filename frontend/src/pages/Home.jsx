@@ -152,7 +152,12 @@ export default function Home() {
       <section className="features" aria-labelledby="features-heading">
         <div className="container">
           <header className="features-header">
-            <img src="/zUrbi-logo.png" alt="" className="features-brand-mark" aria-hidden />
+            <img
+              src="/zUrbi-logo.png"
+              alt=""
+              className="features-brand-mark"
+              aria-hidden="true"
+            />
             <p className="features-eyebrow">zUrbi · Porto Seguro</p>
             <h2 id="features-heading">Como funciona</h2>
             <p className="features-lead">

@@ -124,7 +124,11 @@ export default function Admin() {
                   </select>
                 </div>
 
-                <button className="btn btn-secondary">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  aria-label="Salvar alterações do problema selecionado"
+                >
                   Salvar Alterações
                 </button>
               </div>
