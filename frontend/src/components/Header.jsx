@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store';
 import './Header.css';
@@ -69,6 +69,7 @@ export default function Header() {
               className="header-menu-toggle"
               aria-expanded={menuOpen}
               aria-controls="header-menu-panel"
+              aria-label={menuOpen ? 'Fechar menu de navegação' : 'Abrir menu de navegação'}
               onClick={() => setMenuOpen((o) => !o)}
             >
               <span className="sr-only">{menuOpen ? 'Fechar menu' : 'Abrir menu'}</span>
@@ -111,6 +112,7 @@ export default function Header() {
                       type="button"
                       onClick={handleLogout}
                       className="btn btn-outline btn-sm"
+                      aria-label={`Sair da conta de ${user.name}`}
                     >
                       Sair
                     </button>

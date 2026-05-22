@@ -554,7 +554,13 @@ export default function CentralIA() {
 
         <div className="cia-header-meta">
 
-          <button type="button" className="cia-btn-ghost" onClick={carregar} disabled={loading}>
+          <button
+            type="button"
+            className="cia-btn-ghost"
+            onClick={carregar}
+            disabled={loading}
+            aria-label="Atualizar dados da central de operações"
+          >
 
             Atualizar dados
 
@@ -574,17 +580,36 @@ export default function CentralIA() {
 
             key={item.id}
 
+            id={`cia-tab-${item.id}`}
+
             type="button"
 
             role="tab"
 
             aria-selected={aba === item.id}
 
+            aria-controls={`cia-panel-${item.id}`}
+
+            tabIndex={aba === item.id ? 0 : -1}
+
             className={`cia-tab ${aba === item.id ? 'active' : ''}`}
 
             onClick={() => {
               setAba(item.id);
               if (item.id === 'kanban') setSelectedId(null);
+            }}
+
+            onKeyDown={(e) => {
+              const idx = ABAS.findIndex((a) => a.id === aba);
+              if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                const next =
+                  e.key === 'ArrowRight'
+                    ? ABAS[(idx + 1) % ABAS.length]
+                    : ABAS[(idx - 1 + ABAS.length) % ABAS.length];
+                setAba(next.id);
+                if (next.id === 'kanban') setSelectedId(null);
+              }
             }}
 
           >
@@ -619,7 +644,7 @@ export default function CentralIA() {
 
       {aba === 'geral' && (
 
-        <>
+        <div id="cia-panel-geral" role="tabpanel" aria-labelledby="cia-tab-geral">
 
           <section className="cia-kpis">
 
@@ -703,6 +728,8 @@ export default function CentralIA() {
 
                   className="cia-input"
 
+                  aria-label="Buscar chamado por protocolo ou bairro"
+
                 />
 
                 <select
@@ -780,6 +807,10 @@ export default function CentralIA() {
                         className={`cia-queue-item ${selectedId === o.id ? 'active' : ''}`}
 
                         onClick={() => setSelectedId(o.id)}
+
+                        aria-label={`Selecionar chamado ${o.protocolo}, ${labelUrgencia(o.urgencia)}, ${o.bairro}`}
+
+                        aria-pressed={selectedId === o.id}
 
                       >
 
@@ -991,13 +1022,15 @@ export default function CentralIA() {
 
           </div>
 
-        </>
+        </div>
 
       )}
 
 
 
       {aba === 'kanban' && (
+
+        <div id="cia-panel-kanban" role="tabpanel" aria-labelledby="cia-tab-kanban">
 
         <CentralIAKanban
 
@@ -1018,6 +1051,8 @@ export default function CentralIA() {
           detalheProps={detalheProps}
 
         />
+
+        </div>
 
       )}
 

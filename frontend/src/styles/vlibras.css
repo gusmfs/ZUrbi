@@ -1,0 +1,16 @@
+/**
+ * Ajustes do widget VLibras para coexistir com o layout zUrbi.
+ * Botão à esquerda (position: L) — assistente IA fica à direita.
+ */
+
+.zurbi-vlibras-root[vw] {
+  z-index: 1100 !important;
+}
+
+/* Evita sobreposição com header fixo em telas pequenas */
+@media (max-width: 768px) {
+  .zurbi-vlibras-root[vw] [vw-access-button] {
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
+    top: auto !important;
+  }
+}

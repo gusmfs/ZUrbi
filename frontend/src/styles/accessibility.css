@@ -1,0 +1,86 @@
+/**
+ * Melhorias globais de acessibilidade (WCAG 2.1).
+ */
+
+:root {
+  --a11y-focus-ring: #007aff;
+  --a11y-focus-offset: 2px;
+}
+
+.text-muted,
+.form-hint,
+.cia-kpi-hint,
+.footer-section p {
+  color: var(--label-secondary);
+}
+
+/* Link “pular para o conteúdo” */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 10000;
+  padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 2);
+  background: var(--system-blue, #007aff);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--radius-md, 8px);
+}
+
+.skip-link:focus {
+  position: fixed;
+  left: calc(var(--spacing) * 2);
+  top: calc(var(--spacing) * 2 + env(safe-area-inset-top, 0px));
+  width: auto;
+  height: auto;
+  overflow: visible;
+  outline: none;
+  box-shadow:
+    0 0 0 var(--a11y-focus-offset) var(--system-background, #fff),
+    0 0 0 calc(var(--a11y-focus-offset) + 3px) var(--a11y-focus-ring);
+}
+
+/* Foco visível em controles interativos */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 var(--a11y-focus-offset) var(--system-background, #fff),
+    0 0 0 calc(var(--a11y-focus-offset) + 3px) var(--a11y-focus-ring);
+}
+
+button:focus-visible,
+a:focus-visible,
+[role='button']:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  box-shadow:
+    0 0 0 var(--a11y-focus-offset) var(--system-background, #fff),
+    0 0 0 calc(var(--a11y-focus-offset) + 3px) var(--a11y-focus-ring);
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  border-color: var(--a11y-focus-ring);
+}
+
+/* Respeita usuários que preferem menos animação */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -155,7 +155,12 @@ export default function ApresentacaoIA() {
         <div className="ia-hero-glow" aria-hidden />
         <div className="container ia-hero-inner">
           <div className="ia-hero-brand">
-            <img src="/zUrbi-logo.png" alt="" className="ia-hero-logo" aria-hidden />
+            <img
+              src="/zUrbi-logo.png"
+              alt=""
+              className="ia-hero-logo"
+              aria-hidden="true"
+            />
           </div>
           <p className="ia-hero-badge">Fase inicial no código · maio/2026</p>
           <h1 id="ia-hero-title">Inteligência no zUrbi</h1>
