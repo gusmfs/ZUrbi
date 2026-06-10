@@ -1,0 +1,20 @@
+{
+  "ocorrencias": [
+    {
+      "id": "uuid-1",
+      "protocolo": "ZUR-2026-0001",
+      "descricao": "Buraco com risco de acidente na Av. Principal.",
+      "categoria": "Viário",
+      "bairro": "Centro",
+      "status": "Em Análise"
+    },
+    {
+      "id": "uuid-2",
+      "protocolo": "ZUR-2026-0002",
+      "descricao": "Poste sem iluminação causando insegurança.",
+      "categoria": "Iluminação",
+      "bairro": "Jardins",
+      "status": "Recebido"
+    }
+  ]
+}
