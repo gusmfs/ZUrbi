@@ -8,6 +8,8 @@ import AnaliseDesempenho from './pages/AnaliseDesempenho';
 import CentralIA from './pages/CentralIA';
 import ApresentacaoIA from './pages/ApresentacaoIA';
 import Login from './pages/Login';
+import ListaOcorrencias from './components/ListaOcorrencias';
+import FormOcorrencia from './components/FormOcorrencia';
 import './styles/apple.css';
 import './App.css';
 
@@ -21,6 +23,8 @@ function App() {
           <Route path="/registrar" element={<MapReport />} />
           <Route path="/abrir-chamado" element={<MapReport />} />
           <Route path="/acompanhar" element={<Dashboard />} />
+          <Route path="/ocorrencias" element={<ListaOcorrencias />} />
+          <Route path="/nova-ocorrencia" element={<FormOcorrencia />} />
           <Route path="/analise" element={<AnaliseDesempenho />} />
           <Route path="/central-ia" element={<CentralIA />} />
           <Route path="/ia" element={<ApresentacaoIA />} />

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getOcorrencias } from '../services/api';
+import { PageHeader, Card, Badge, Alert } from './ui';
+import './ListaOcorrencias.css';
 
 function ListaOcorrencias() {
   const [ocorrencias, setOcorrencias] = useState([]);
@@ -17,10 +19,9 @@ function ListaOcorrencias() {
         const response = await getOcorrencias();
         if (cancelled) return;
 
-        const dados = response.data;
-        setOcorrencias(dados);
+        setOcorrencias(response.data);
         setStatus('success');
-      } catch (err) {
+      } catch {
         if (cancelled) return;
         setStatus('error');
         setError('Não foi possível carregar as ocorrências. Tente novamente.');
@@ -34,33 +35,49 @@ function ListaOcorrencias() {
     };
   }, []);
 
-  if (status === 'loading') {
-    return <p>Carregando ocorrências...</p>;
-  }
-
-  if (status === 'error') {
-    return <p style={{ color: 'red' }}>{error}</p>;
-  }
-
-  if (ocorrencias.length === 0) {
-    return <p>Nenhuma ocorrência registrada</p>;
-  }
-
   return (
-    <div>
-      <h2>Lista de Ocorrências</h2>
-      <ul>
-        {ocorrencias.map((ocorrencia) => (
-          <li key={ocorrencia.id}>
-            <strong>{ocorrencia.protocolo}</strong> — {ocorrencia.descricao}
-            <br />
-            <small>
-              {ocorrencia.categoria} · {ocorrencia.bairro} · {ocorrencia.status}
-            </small>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <section className="lista-ocorrencias">
+      <div className="container container-sm">
+        <PageHeader title="Minhas Ocorrências" />
+
+        {status === 'loading' && (
+          <p className="loading-state" aria-live="polite">
+            Carregando ocorrências...
+          </p>
+        )}
+
+        {status === 'error' && (
+          <Alert variant="error" role="alert">
+            {error}
+          </Alert>
+        )}
+
+        {status === 'success' && ocorrencias.length === 0 && (
+          <Card variant="flat" className="lista-ocorrencias__empty">
+            <p>Nenhuma ocorrência registrada</p>
+          </Card>
+        )}
+
+        {status === 'success' && ocorrencias.length > 0 && (
+          <ul className="lista-ocorrencias__list">
+            {ocorrencias.map((ocorrencia) => (
+              <li key={ocorrencia.id}>
+                <Card variant="flat" className="lista-ocorrencias__item">
+                  <div className="lista-ocorrencias__header">
+                    <strong>{ocorrencia.protocolo}</strong>
+                    <Badge variant="primary">{ocorrencia.status}</Badge>
+                  </div>
+                  <p className="lista-ocorrencias__descricao">{ocorrencia.descricao}</p>
+                  <small className="lista-ocorrencias__meta">
+                    {ocorrencia.categoria} · {ocorrencia.bairro}
+                  </small>
+                </Card>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
   );
 }
 

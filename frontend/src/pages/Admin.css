@@ -1,19 +1,6 @@
 .admin {
   width: 100%;
-}
-
-.admin .page-header {
-  margin-bottom: calc(var(--spacing) * 3);
-}
-
-.admin .page-header h1 {
-  color: var(--primary);
-}
-
-.page-description {
-  color: var(--text-secondary);
-  font-size: 1.1rem;
-  line-height: 1.6;
+  padding: calc(var(--spacing) * 2) 0;
 }
 
 .admin-layout {
@@ -24,17 +11,15 @@
 
 .admin-list,
 .admin-detail {
-  background: white;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  padding: 0;
   overflow: hidden;
 }
 
-.admin-list h2,
-.admin-detail h2 {
-  padding: calc(var(--spacing) * 1.5);
+.admin-panel-title {
+  padding: calc(var(--spacing) * 2);
   border-bottom: 1px solid var(--border-gray);
   margin: 0;
+  font-size: 1.25rem;
 }
 
 .problem-list {
@@ -43,10 +28,16 @@
 }
 
 .problem-item {
+  display: block;
+  width: 100%;
+  text-align: left;
   padding: calc(var(--spacing) * 1.5);
+  border: none;
   border-bottom: 1px solid var(--border-gray);
+  background: transparent;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color var(--transition-fast);
+  font-family: inherit;
 }
 
 .problem-item:hover {
@@ -55,7 +46,7 @@
 
 .problem-item.active {
   background-color: var(--light-gray);
-  border-left: 4px solid var(--primary);
+  border-left: 4px solid var(--zurbi-blue);
   padding-left: calc(var(--spacing) * 1.5 - 4px);
 }
 
@@ -69,36 +60,22 @@
 
 .problem-item-header h4 {
   margin: 0;
+  font-size: 1rem;
 }
 
 .problem-item p {
   margin: 0;
-  color: var(--text-secondary);
+  color: var(--label-secondary);
   font-size: 0.875rem;
 }
 
-.empty-message {
-  padding: calc(var(--spacing) * 2);
-  text-align: center;
-  color: var(--text-secondary);
-}
-
-.empty-state {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 400px;
-  color: var(--text-secondary);
-}
-
 .detail-card {
-  padding: calc(var(--spacing) * 2);
+  padding: calc(var(--spacing) * 2.5);
 }
 
 .detail-card h2 {
-  padding: 0;
-  border: none;
   margin-bottom: calc(var(--spacing) * 2);
+  font-size: 1.5rem;
 }
 
 .detail-field {
@@ -109,30 +86,15 @@
   display: block;
   font-weight: 600;
   margin-bottom: calc(var(--spacing) * 0.5);
-  color: var(--text-primary);
+  color: var(--label-primary);
 }
 
 .detail-field p {
   margin: 0;
-  color: var(--text-primary);
+  color: var(--label-primary);
   padding: var(--spacing);
   background-color: var(--light-gray);
-  border-radius: 4px;
-}
-
-.detail-select {
-  width: 100%;
-  padding: var(--spacing);
-  border: 1px solid var(--border-gray);
-  border-radius: 4px;
-  font-size: 1rem;
-  color: var(--text-primary);
-}
-
-.detail-select:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1);
+  border-radius: var(--radius-sm);
 }
 
 .detail-grid {

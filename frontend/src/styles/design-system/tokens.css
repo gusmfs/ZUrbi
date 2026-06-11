@@ -1,0 +1,73 @@
+/* zUrbi Design System — tokens centralizados (sincronizados com brandColors.js) */
+:root {
+  /* Marca zUrbi */
+  --zurbi-blue: #2A7FD6;
+  --zurbi-yellow: #F0B429;
+  --zurbi-green: #35B56A;
+  --zurbi-blue-dark: #003366;
+  --zurbi-green-dark: #00AA44;
+
+  /* Cores de interface */
+  --system-blue: var(--zurbi-blue);
+  --system-blue-dark: #1E6BB8;
+  --system-green: #34C759;
+  --system-red: #FF3B30;
+  --system-orange: #FF9500;
+
+  --system-background: #ffffff;
+  --system-gray-1: #8E8E93;
+  --system-gray-4: #D1D1D6;
+  --system-gray-5: #E5E5EA;
+  --system-gray-6: #F2F2F7;
+
+  --label-primary: #1C1C1E;
+  --label-secondary: #636366;
+  --label-tertiary: #C7C7CC;
+
+  /* Aliases semânticos (compatibilidade com páginas legadas) */
+  --primary: var(--zurbi-blue-dark);
+  --primary-dark: #001a4d;
+  --primary-light: var(--zurbi-blue);
+  --secondary: var(--zurbi-green-dark);
+  --neutral-gray: var(--label-secondary);
+  --light-gray: var(--system-gray-6);
+  --lighter-gray: #FAFAFA;
+  --border-gray: var(--system-gray-4);
+  --text-primary: var(--label-primary);
+  --text-secondary: var(--label-secondary);
+  --text-dark: var(--label-primary);
+  --text-gray: var(--label-secondary);
+  --error: var(--system-red);
+  --success: var(--system-green);
+  --warning: var(--system-orange);
+  --info: var(--zurbi-blue);
+
+  /* Espaçamento (base 8px) */
+  --spacing: 8px;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+
+  /* Raios */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.08);
+
+  /* Animação */
+  --spring-easing: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+
+  /* Acessibilidade */
+  --focus-ring: 0 0 0 2px var(--system-background), 0 0 0 5px var(--zurbi-blue);
+}
