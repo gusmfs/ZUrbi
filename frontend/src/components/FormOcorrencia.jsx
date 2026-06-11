@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import { criarOcorrencia } from '../services/api';
+import { PageHeader, Card, Select, Textarea, Button, Alert } from './ui';
+import './FormOcorrencia.css';
+
+const CATEGORIAS = ['Viário', 'Iluminação', 'Saneamento'];
 
 function FormOcorrencia() {
   const [descricao, setDescricao] = useState('');
@@ -10,7 +14,8 @@ function FormOcorrencia() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!descricao || !categoria) {
-      alert('Por favor, preencha todos os campos.');
+      setError('Por favor, preencha todos os campos.');
+      setStatus('error');
       return;
     }
 
@@ -28,47 +33,57 @@ function FormOcorrencia() {
       setStatus('success');
       setDescricao('');
       setCategoria('Viário');
-    } catch (err) {
+    } catch {
       setStatus('error');
       setError('Falha ao enviar ocorrência. Tente novamente.');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Registrar Nova Ocorrência</h2>
+    <section className="form-ocorrencia">
+      <div className="container container-sm">
+        <Card variant="flat" className="form-ocorrencia__card">
+          <PageHeader title="Registrar Nova Ocorrência" />
 
-      {status === 'success' && (
-        <p style={{ color: 'green' }}>Ocorrência registrada com sucesso!</p>
-      )}
-      {status === 'error' && <p style={{ color: 'red' }}>{error}</p>}
+          <form onSubmit={handleSubmit} noValidate>
+            {status === 'success' && (
+              <Alert variant="success">Ocorrência registrada com sucesso!</Alert>
+            )}
+            {status === 'error' && error && (
+              <Alert variant="error">{error}</Alert>
+            )}
 
-      <div>
-        <label htmlFor="categoria">Categoria:</label>
-        <select
-          id="categoria"
-          value={categoria}
-          onChange={(e) => setCategoria(e.target.value)}
-        >
-          <option value="Viário">Viário</option>
-          <option value="Iluminação">Iluminação</option>
-          <option value="Saneamento">Saneamento</option>
-        </select>
+            <Select
+              id="categoria"
+              label="Categoria"
+              value={categoria}
+              onChange={(e) => setCategoria(e.target.value)}
+              required
+            >
+              {CATEGORIAS.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </Select>
+
+            <Textarea
+              id="descricao"
+              label="Descrição"
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+              required
+            />
+
+            <div className="form-ocorrencia__actions">
+              <Button type="submit" disabled={status === 'submitting'}>
+                {status === 'submitting' ? 'Enviando...' : 'Enviar Ocorrência'}
+              </Button>
+            </div>
+          </form>
+        </Card>
       </div>
-      <div>
-        <label htmlFor="descricao">Descrição:</label>
-        <textarea
-          id="descricao"
-          value={descricao}
-          onChange={(e) => setDescricao(e.target.value)}
-          required
-        />
-      </div>
-
-      <button type="submit" disabled={status === 'submitting'}>
-        {status === 'submitting' ? 'Enviando...' : 'Enviar Ocorrência'}
-      </button>
-    </form>
+    </section>
   );
 }
 

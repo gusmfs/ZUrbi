@@ -1,8 +1,25 @@
 import { useState } from 'react';
 import { useProblemStore } from '../store';
+import {
+  PageHeader,
+  Card,
+  Badge,
+  Select,
+  Button,
+} from '../components/ui';
 import './Admin.css';
 
 const STATUS_OPTIONS = ['reported', 'in_progress', 'resolved'];
+const STATUS_LABELS = {
+  resolved: 'Resolvido',
+  in_progress: 'Em Andamento',
+  reported: 'Reportado',
+};
+const STATUS_VARIANTS = {
+  resolved: 'success',
+  in_progress: 'primary',
+  reported: 'warning',
+};
 
 export default function Admin() {
   const { problems, updateProblem } = useProblemStore();
@@ -15,44 +32,33 @@ export default function Admin() {
   return (
     <div className="admin">
       <div className="container">
-        <div className="page-header">
-          <h1>Painel de Administração</h1>
-          <p className="page-description">
-            Gerencie os problemas reportados na plataforma zUrbi e atualize o status dos trabalhos.
-          </p>
-        </div>
+        <PageHeader
+          title="Painel de Administração"
+          description="Gerencie os problemas reportados na plataforma zUrbi e atualize o status dos trabalhos."
+        />
 
         <div className="admin-layout">
-          <div className="admin-list">
-            <h2>Problemas</h2>
+          <Card variant="flat" className="admin-list">
+            <h2 className="admin-panel-title">Problemas</h2>
             {problems.length > 0 ? (
-              <div className="problem-list">
+              <div className="problem-list" role="list">
                 {problems.map((problem) => (
-                  <div
+                  <button
                     key={problem.id}
+                    type="button"
+                    role="listitem"
                     className={`problem-item ${selectedProblem?.id === problem.id ? 'active' : ''}`}
                     onClick={() => setSelectedProblem(problem)}
+                    aria-pressed={selectedProblem?.id === problem.id}
                   >
                     <div className="problem-item-header">
                       <h4>{problem.title}</h4>
-                      <span
-                        className={`badge badge-${
-                          problem.status === 'resolved'
-                            ? 'success'
-                            : problem.status === 'in_progress'
-                            ? 'primary'
-                            : 'warning'
-                        }`}
-                      >
-                        {problem.status === 'resolved'
-                          ? 'Resolvido'
-                          : problem.status === 'in_progress'
-                          ? 'Em Andamento'
-                          : 'Reportado'}
-                      </span>
+                      <Badge variant={STATUS_VARIANTS[problem.status] || 'warning'}>
+                        {STATUS_LABELS[problem.status] || 'Reportado'}
+                      </Badge>
                     </div>
                     <p>{problem.description.substring(0, 50)}...</p>
-                  </div>
+                  </button>
                 ))}
               </div>
             ) : (
@@ -60,9 +66,9 @@ export default function Admin() {
                 <p>Nenhum problema ainda.</p>
               </div>
             )}
-          </div>
+          </Card>
 
-          <div className="admin-detail">
+          <Card variant="flat" className="admin-detail">
             {selectedProblem ? (
               <div className="detail-card">
                 <h2>{selectedProblem.title}</h2>
@@ -78,7 +84,13 @@ export default function Admin() {
                   </div>
                   <div className="detail-field">
                     <label>Severidade</label>
-                    <p>{selectedProblem.severity === 'high' ? 'Alta' : selectedProblem.severity === 'medium' ? 'Média' : 'Baixa'}</p>
+                    <p>
+                      {selectedProblem.severity === 'high'
+                        ? 'Alta'
+                        : selectedProblem.severity === 'medium'
+                          ? 'Média'
+                          : 'Baixa'}
+                    </p>
                   </div>
                 </div>
 
@@ -104,40 +116,36 @@ export default function Admin() {
                   </div>
                 </div>
 
-                <div className="detail-field">
-                  <label htmlFor="status">Status *</label>
-                  <select
-                    id="status"
-                    value={selectedProblem.status}
-                    onChange={(e) => handleStatusChange(selectedProblem.id, e.target.value)}
-                    className="detail-select"
-                  >
-                    {STATUS_OPTIONS.map((status) => (
-                      <option key={status} value={status}>
-                        {status === 'resolved'
-                          ? 'Resolvido'
-                          : status === 'in_progress'
-                          ? 'Em Andamento'
-                          : 'Reportado'}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <Select
+                  id="status"
+                  label="Status"
+                  required
+                  value={selectedProblem.status}
+                  onChange={(e) =>
+                    handleStatusChange(selectedProblem.id, e.target.value)
+                  }
+                >
+                  {STATUS_OPTIONS.map((status) => (
+                    <option key={status} value={status}>
+                      {STATUS_LABELS[status]}
+                    </option>
+                  ))}
+                </Select>
 
-                <button
+                <Button
                   type="button"
-                  className="btn btn-secondary"
+                  variant="secondary"
                   aria-label="Salvar alterações do problema selecionado"
                 >
                   Salvar Alterações
-                </button>
+                </Button>
               </div>
             ) : (
               <div className="empty-state">
                 <p>Selecione um problema para ver os detalhes</p>
               </div>
             )}
-          </div>
+          </Card>
         </div>
       </div>
     </div>

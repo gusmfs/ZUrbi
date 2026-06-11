@@ -47,35 +47,6 @@
   margin-bottom: calc(var(--spacing) * 4);
 }
 
-/* Specific Gov.br Button */
-.btn-govbr {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: calc(var(--spacing) * 1.5);
-  width: 100%;
-  background-color: #1351b4; /* Standard gov.br blue */
-  color: white;
-  padding: calc(var(--spacing) * 2);
-  font-size: 1.15rem;
-  font-weight: 600;
-  border-radius: var(--radius-pill);
-  border: none;
-  cursor: pointer;
-  transition: transform 0.2s var(--spring-easing), background-color 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 14px rgba(19, 81, 180, 0.2);
-}
-
-.btn-govbr:hover {
-  background-color: #0c326f;
-  box-shadow: 0 6px 20px rgba(19, 81, 180, 0.3);
-  transform: translateY(-2px);
-}
-
-.btn-govbr:active {
-  transform: scale(0.97);
-}
-
 .govbr-icon {
   height: 24px;
   width: auto;
