@@ -9,6 +9,7 @@ public record UsuarioResponseDTO(
         UUID id,
         String nome,
         String email,
+        String cpfMascarado,
         TipoUsuario tipo,
         LocalDateTime criadoEm
 ) {}
