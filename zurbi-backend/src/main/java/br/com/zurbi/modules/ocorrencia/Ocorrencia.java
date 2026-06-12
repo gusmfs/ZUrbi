@@ -1,4 +1,3 @@
-// src/main/java/br/com/zurbi/modules/ocorrencia/Ocorrencia.java
 package br.com.zurbi.modules.ocorrencia;
 
 import br.com.zurbi.modules.midia.Midia;

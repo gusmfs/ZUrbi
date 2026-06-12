@@ -1,4 +1,3 @@
-// src/main/java/br/com/zurbi/modules/usuario/Usuario.java
 package br.com.zurbi.modules.usuario;
 
 import br.com.zurbi.shared.enums.TipoUsuario;
@@ -23,6 +22,9 @@ public class Usuario {
 
     @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false, unique = true, length = 11)
+    private String cpf;
 
     @Column(nullable = false)
     private String senhaHash;

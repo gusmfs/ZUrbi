@@ -1,4 +1,3 @@
-// src/main/java/br/com/zurbi/ZurbiApplication.java
 package br.com.zurbi;
 
 import org.springframework.boot.SpringApplication;

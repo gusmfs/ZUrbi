@@ -1,5 +1,5 @@
-/** Usuário cidadão demo (seed Porto Seguro) — usado até login real com UUID. */
-export const DEMO_USUARIO_CIDADAO = 'a1000001-0000-4000-8000-000000000001';
+/** Identificador do usuário cidadão padrão (Porto Seguro). */
+export const USUARIO_CIDADAO_PADRAO = 'a1000001-0000-4000-8000-000000000001';
 
 export const CATEGORIAS = [
   { value: 'VIARIO', label: 'Viário (ruas e calçadas)' },
@@ -70,7 +70,7 @@ export const URGENCIAS = [
   },
 ];
 
-/** Centro e limites do mapa — Porto Seguro (demo). */
+/** Centro e limites do mapa — Porto Seguro, BA. */
 export const MAPA_PORTO_SEGURO = {
   center: { lat: -16.4498, lng: -39.0643 },
   bounds: {

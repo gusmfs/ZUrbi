@@ -1,0 +1,170 @@
+/* Páginas de autenticação — visual inspirado no gov.br */
+
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 200px);
+  padding: calc(var(--spacing) * 4);
+  background: linear-gradient(180deg, #f0f4f8 0%, var(--system-background) 40%);
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 440px;
+}
+
+.auth-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  text-align: left;
+}
+
+.auth-card--wide {
+  max-width: 480px;
+}
+
+.auth-govbr-bar {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 1.5);
+  padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 2.5);
+  background: linear-gradient(90deg, #1351b4 0%, #0c326f 100%);
+  color: #fff;
+}
+
+.auth-govbr-bar img {
+  height: 22px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+.auth-govbr-bar span {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.auth-body {
+  padding: calc(var(--spacing) * 4) calc(var(--spacing) * 3);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: calc(var(--spacing) * 3);
+}
+
+.auth-logo {
+  height: 48px;
+  width: auto;
+  margin-bottom: calc(var(--spacing) * 2);
+}
+
+.auth-header h2 {
+  font-size: 1.5rem;
+  margin-bottom: calc(var(--spacing) * 0.75);
+  letter-spacing: -0.02em;
+  color: var(--label-primary);
+}
+
+.auth-header p {
+  color: var(--label-secondary);
+  font-size: 0.95rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.auth-form .form-group {
+  margin-bottom: calc(var(--spacing) * 2);
+  text-align: left;
+}
+
+.auth-form label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--label-primary);
+  margin-bottom: calc(var(--spacing) * 0.75);
+}
+
+.auth-form input {
+  width: 100%;
+  padding: calc(var(--spacing) * 1.25) calc(var(--spacing) * 1.5);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: #1351b4;
+  box-shadow: 0 0 0 3px rgba(19, 81, 180, 0.15);
+}
+
+.auth-form input[aria-invalid='true'] {
+  border-color: var(--zurbi-red, #ff3b30);
+}
+
+.auth-form .form-error {
+  margin-top: calc(var(--spacing) * 0.5);
+  font-size: 0.8125rem;
+  color: var(--zurbi-red, #ff3b30);
+}
+
+.auth-form .form-hint {
+  margin-top: calc(var(--spacing) * 0.5);
+  font-size: 0.8125rem;
+  color: var(--label-secondary);
+}
+
+.auth-actions {
+  margin-top: calc(var(--spacing) * 3);
+}
+
+.auth-actions .btn-govbr {
+  width: 100%;
+}
+
+.auth-footer {
+  margin-top: calc(var(--spacing) * 3);
+  padding-top: calc(var(--spacing) * 2.5);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  text-align: center;
+}
+
+.auth-footer p {
+  font-size: 0.85rem;
+  color: var(--label-secondary);
+  margin: 0 0 calc(var(--spacing) * 1);
+  line-height: 1.5;
+}
+
+.auth-link {
+  color: #1351b4;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+.auth-alert {
+  margin-bottom: calc(var(--spacing) * 2);
+}
+
+@media (max-width: 480px) {
+  .auth-page {
+    padding: calc(var(--spacing) * 2);
+    align-items: flex-start;
+    padding-top: calc(var(--spacing) * 3);
+  }
+
+  .auth-body {
+    padding: calc(var(--spacing) * 3) calc(var(--spacing) * 2);
+  }
+}

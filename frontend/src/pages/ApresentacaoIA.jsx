@@ -42,16 +42,16 @@ const CAMADAS_IA = [
     statusVariant: 'live',
     titulo: 'Motor de triagem',
     descricao:
-      'Núcleo atual da IA no zUrbi: regras e vocabulário no backend. Explicável, auditável e sem custo de API externa.',
+      'Motor de triagem por regras e vocabulário no backend. Explicável, auditável e sem custo de API externa.',
     itens: ['Classificação na abertura', 'Triagem na Central', 'Confirmação no banco'],
   },
   {
     id: 'assistente',
-    status: 'Piloto inicial',
+    status: 'Piloto',
     statusVariant: 'pilot',
     titulo: 'Assistente conversacional',
     descricao:
-      'Primeiro experimento com modelo de linguagem (Ollama local). Lê contexto da fila; não substitui o motor de regras.',
+      'Assistente com modelo de linguagem (Ollama) na Central. Lê contexto da fila e complementa o motor de regras.',
     itens: ['Chat na Central', 'Contexto ao vivo', 'Listas por órgão'],
   },
 ];
@@ -59,7 +59,7 @@ const CAMADAS_IA = [
 const ENTREGAS_RECENTES = [
   {
     titulo: 'Triagem explicável',
-    detalhe: 'Categoria, tipo, órgão, urgência e motivos — backend e fallback no navegador.',
+    detalhe: 'Categoria, tipo, órgão, urgência e motivos — integração com o backend de triagem.',
   },
   {
     titulo: 'Central de Operações',
@@ -84,16 +84,15 @@ const SUGESTOES_MOTOR = [
 ];
 
 const INCLUI = [
-  'Motor de triagem por regras (~150 termos) — núcleo da IA hoje',
+  'Motor de triagem por regras (~150 termos)',
   'Classificação na abertura do chamado e triagem na Central',
   'Kanban por órgão; indicadores alinhados à fila operacional',
-  'Assistente na Central (Ollama local, contexto da fila em tempo real)',
-  'APIs REST e fallback de classificação no navegador',
+  'Assistente na Central (Ollama, contexto da fila em tempo real)',
+  'APIs REST de triagem e classificação',
   'Emergências direcionadas à Defesa Civil (DCM)',
 ];
 
 const NAO_INCLUI = [
-  'Produto de IA “fechado” — ainda estamos no início da implementação no código',
   'Decisões automáticas sem confirmação humana na Central',
   'Modelo treinado com histórico real da prefeitura',
   'Interpretação de fotos anexadas',
@@ -162,12 +161,11 @@ export default function ApresentacaoIA() {
               aria-hidden="true"
             />
           </div>
-          <p className="ia-hero-badge">Fase inicial no código · maio/2026</p>
+          <p className="ia-hero-badge">Porto Seguro · maio/2026</p>
           <h1 id="ia-hero-title">Inteligência no zUrbi</h1>
           <p className="ia-hero-lead">
-            Estamos no começo da implementação de IA no projeto: o que já funciona é um motor de
-            triagem por regras (produção) e um assistente conversacional em piloto na Central.
-            Esta página documenta o que existe hoje — não a visão final do produto.
+            O zUrbi combina um motor de triagem por regras — explicável e auditável — com um
+            assistente conversacional na Central de Operações para apoiar gestores e cidadãos.
           </p>
           <div className="ia-hero-actions">
             <Link to="/registrar" className="ia-btn ia-btn-primary">
@@ -185,10 +183,9 @@ export default function ApresentacaoIA() {
           <div className="ia-status-card">
             <h2 id="ia-status-title">Onde estamos</h2>
             <p>
-              A IA no zUrbi <strong>não é um chatbot único nem um modelo treinado</strong> com
-              dados municipais. A base é código explícito: vocabulário, regras e APIs. O assistente
-              com Ollama é um <strong>primeiro passo experimental</strong> para o gestor consultar
-              a fila em linguagem natural — sujeito a ajustes, lentidão e limitações do modelo local.
+              A inteligência do zUrbi se apoia em código explícito: vocabulário, regras e APIs.
+              O assistente com Ollama permite ao gestor consultar a fila em linguagem natural,
+              complementando a triagem oficial — sempre com confirmação humana.
             </p>
             <ul className="ia-status-list">
               <li>
@@ -266,7 +263,7 @@ export default function ApresentacaoIA() {
 
       <section className="ia-camadas" aria-labelledby="ia-camadas-title">
         <div className="container">
-          <p className="ia-section-eyebrow">Duas frentes no código</p>
+          <p className="ia-section-eyebrow">Duas frentes</p>
           <h2 id="ia-camadas-title" className="ia-section-title ia-section-title--center">
             O que já está implementado
           </h2>
@@ -407,11 +404,11 @@ export default function ApresentacaoIA() {
         <div className="container">
           <p className="ia-section-eyebrow">Escopo</p>
           <h2 id="ia-escopo-title" className="ia-section-title ia-section-title--center">
-            No código hoje e fora do escopo atual
+            Recursos disponíveis e limitações atuais
           </h2>
           <p className="ia-escopo-intro">
-            Lista honesta para quem avalia o projeto: o zUrbi já demonstra valor com triagem por
-            regras; a parte generativa (assistente) ainda é piloto e evolui com o uso.
+            O zUrbi entrega triagem explicável por regras e apoio conversacional na Central;
+            os itens abaixo delimitam o que está operacional hoje.
           </p>
           <div className="ia-escopo-grid">
             <div className="ia-escopo-col">
@@ -440,9 +437,8 @@ export default function ApresentacaoIA() {
             <p className="ia-section-eyebrow">Evolução</p>
             <h2 id="ia-roadmap-title">Próximos passos</h2>
             <p className="ia-roadmap-note">
-              A implementação atual é o <strong>primeiro degrau</strong>: provar triagem
-              explicável e apoio ao gestor. Os itens abaixo dependem de maturidade do motor,
-              dados reais e validação com a prefeitura — não são promessas de prazo nesta página.
+              A triagem explicável e o apoio ao gestor são a base da plataforma. Os itens abaixo
+              representam evoluções previstas, sujeitas a validação com a prefeitura.
             </p>
           </div>
           <ul className="ia-roadmap-list">
@@ -458,10 +454,10 @@ export default function ApresentacaoIA() {
 
       <section className="ia-cta">
         <div className="container ia-cta-inner">
-          <h2>Demonstração de ponta a ponta</h2>
+          <h2>Do relato à resolução</h2>
           <p>
-            Do relato no mapa até a triagem e o assistente na Central — Porto Seguro, ambiente de
-            demonstração. A IA no código ainda cresce; seu feedback orienta o que priorizar.
+            Do registro no mapa até a triagem e o assistente na Central — Porto Seguro integrado
+            de ponta a ponta.
           </p>
           <div className="ia-cta-actions">
             <Link to="/registrar" className="ia-btn ia-btn-primary">

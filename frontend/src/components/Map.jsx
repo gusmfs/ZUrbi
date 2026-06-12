@@ -55,7 +55,7 @@ function MapUnconfigured() {
             No arquivo <code>.env.local</code> na raiz do projeto:
             <pre>VITE_GOOGLE_MAPS_API_KEY=sua_chave_aqui</pre>
           </li>
-          <li>Reinicie o frontend (<code>npm run dev</code>)</li>
+          <li>Reinicie a aplicação após configurar a chave</li>
         </ol>
       </div>
     </div>

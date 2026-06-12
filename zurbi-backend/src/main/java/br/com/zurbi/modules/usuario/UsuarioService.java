@@ -3,6 +3,7 @@ package br.com.zurbi.modules.usuario;
 import br.com.zurbi.modules.usuario.dto.UsuarioRequestDTO;
 import br.com.zurbi.modules.usuario.dto.UsuarioResponseDTO;
 import br.com.zurbi.shared.exception.ResourceNotFoundException;
+import br.com.zurbi.shared.validation.CpfUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,12 +21,17 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioResponseDTO criar(UsuarioRequestDTO dto) {
+        String cpf = CpfUtil.somenteDigitos(dto.cpf());
         if (usuarioRepository.existsByEmail(dto.email())) {
             throw new IllegalArgumentException("Email já cadastrado.");
         }
+        if (usuarioRepository.existsByCpf(cpf)) {
+            throw new IllegalArgumentException("CPF já cadastrado.");
+        }
         Usuario entidade = Usuario.builder()
-                .nome(dto.nome())
-                .email(dto.email())
+                .nome(dto.nome().trim())
+                .cpf(cpf)
+                .email(dto.email().trim().toLowerCase())
                 .senhaHash(passwordEncoder.encode(dto.senha()))
                 .tipo(dto.tipo())
                 .build();
@@ -46,6 +52,13 @@ public class UsuarioService {
     }
 
     private UsuarioResponseDTO paraDto(Usuario u) {
-        return new UsuarioResponseDTO(u.getId(), u.getNome(), u.getEmail(), u.getTipo(), u.getCriadoEm());
+        return new UsuarioResponseDTO(
+                u.getId(),
+                u.getNome(),
+                u.getEmail(),
+                CpfUtil.mascarar(u.getCpf()),
+                u.getTipo(),
+                u.getCriadoEm()
+        );
     }
 }

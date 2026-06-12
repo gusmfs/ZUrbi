@@ -1,4 +1,3 @@
-// src/main/java/br/com/zurbi/modules/orgao/Orgao.java
 package br.com.zurbi.modules.orgao;
 
 import br.com.zurbi.shared.enums.CategoriaOcorrencia;

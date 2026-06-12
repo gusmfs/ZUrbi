@@ -15,7 +15,6 @@ const MENSAGEM_BOAS_VINDAS = {
   role: 'assistant',
   content:
     'Olá! Sou o assistente da Central de Operações e estou aqui para ajudar você a entender a fila de chamados e as estatísticas de Porto Seguro.\n\n'
-    + 'Ainda estou no começo — em algumas perguntas posso demorar um pouquinho para responder, mas estou aprendendo e vou melhorar a cada uso. '
     + 'Pode me perguntar quantos chamados há por secretaria e, na sequência, pedir a lista em tabela — mantenho o mesmo órgão da conversa.',
 };
 

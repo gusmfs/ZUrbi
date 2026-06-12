@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Map from '../components/Map';
 import OcorrenciaForm from '../components/OcorrenciaForm';
 import { useAuthStore } from '../store';
-import { DEMO_USUARIO_CIDADAO } from '../constants/ocorrencia';
+import { USUARIO_CIDADAO_PADRAO } from '../constants/ocorrencia';
 import { registrarOcorrencia } from '../services/ocorrencias';
 import './MapReport.css';
 
@@ -15,10 +15,10 @@ const STEP_TITLES = {
 };
 
 function resolverUsuarioId(user) {
-  if (!user) return DEMO_USUARIO_CIDADAO;
+  if (!user) return USUARIO_CIDADAO_PADRAO;
   const id = user.usuarioId || user.id;
   if (typeof id === 'string' && id.includes('-')) return id;
-  return DEMO_USUARIO_CIDADAO;
+  return USUARIO_CIDADAO_PADRAO;
 }
 
 function mensagemErroApi(error) {

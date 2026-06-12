@@ -1,4 +1,3 @@
-// src/main/java/br/com/zurbi/modules/atualizacaostatus/AtualizacaoStatus.java
 package br.com.zurbi.modules.atualizacaostatus;
 
 import br.com.zurbi.modules.ocorrencia.Ocorrencia;

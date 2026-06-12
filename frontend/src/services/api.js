@@ -17,7 +17,4 @@ const jsonServerApi = axios.create({
 
 export const getOcorrencias = () => jsonServerApi.get('/ocorrencias');
 
-export const criarOcorrencia = (ocorrenciaData) =>
-  jsonServerApi.post('/ocorrencias', ocorrenciaData);
-
 export default api;
