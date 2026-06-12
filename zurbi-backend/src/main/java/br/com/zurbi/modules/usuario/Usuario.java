@@ -1,4 +1,3 @@
-// src/main/java/br/com/zurbi/modules/usuario/Usuario.java
 package br.com.zurbi.modules.usuario;
 
 import br.com.zurbi.shared.enums.TipoUsuario;

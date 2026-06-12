@@ -2,7 +2,7 @@
 
 ALTER TABLE tb_usuario ADD COLUMN cpf VARCHAR(11);
 
--- Backfill para usuários demo existentes (CPFs fictícios únicos, apenas dev)
+-- Backfill de CPF para registros existentes
 UPDATE tb_usuario SET cpf = '11144477735' WHERE id = 'a1000001-0000-4000-8000-000000000001';
 UPDATE tb_usuario SET cpf = '39053344705' WHERE id = 'a1000001-0000-4000-8000-000000000002';
 UPDATE tb_usuario SET cpf = '52998224725' WHERE id = 'a1000001-0000-4000-8000-000000000003';

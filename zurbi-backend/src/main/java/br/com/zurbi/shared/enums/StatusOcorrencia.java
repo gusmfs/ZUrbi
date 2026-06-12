@@ -1,4 +1,3 @@
-// src/main/java/br/com/zurbi/shared/enums/StatusOcorrencia.java
 package br.com.zurbi.shared.enums;
 
 public enum StatusOcorrencia {
