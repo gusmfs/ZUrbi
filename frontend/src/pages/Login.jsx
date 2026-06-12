@@ -1,54 +1,69 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store';
-import './Login.css';
+import { Button } from '../components/ui';
+import './Auth.css';
 
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useAuthStore();
 
   const handleGovBrLogin = () => {
-    // Simulating Gov.br OAuth login success
     const mockUser = {
       id: 'a1000001-0000-4000-8000-000000000001',
       usuarioId: 'a1000001-0000-4000-8000-000000000001',
       name: 'Maria Silva',
       role: 'user',
-      cpf: '***.***.***-**',
+      cpf: '***.***.***-35',
       provider: 'gov.br',
     };
-    
+
     login(mockUser);
-    
-    // Redirect to home or dashboard after successful authentication
     navigate('/');
   };
 
   return (
-    <div className="login-page">
-      <div className="login-container">
-        <div className="login-card">
-          <div className="login-header">
-            <img src="/zUrbi-logo.png" alt="zUrbi Logo" className="login-logo" />
-            <h2>Entrar no zUrbi</h2>
-            <p>Acesse o sistema para reportar e acompanhar problemas</p>
+    <div className="auth-page">
+      <div className="auth-container">
+        <div className="auth-card">
+          <div className="auth-govbr-bar">
+            <img
+              src="https://ajuda.gov.br/interface/padrao-govbr/images/govbr-logo-large.png"
+              alt=""
+              aria-hidden
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+            <span>Acesso gov.br</span>
           </div>
-          
-          <div className="login-actions">
-            <button
-              type="button"
-              className="btn btn-govbr"
-              onClick={handleGovBrLogin}
-              aria-label="Entrar com conta gov.br"
-            >
-              <img src="https://ajuda.gov.br/interface/padrao-govbr/images/govbr-logo-large.png" alt="Gov.br" className="govbr-icon" onError={(e) => e.target.style.display='none'} />
-              Entrar com gov.br
-            </button>
-          </div>
-          
-          <div className="login-footer">
-            <p className="login-hint">
-              O acesso é feito via integração segura com o portal do Governo Federal. Nós não armazenamos as suas senhas.
-            </p>
+
+          <div className="auth-body">
+            <div className="auth-header">
+              <img src="/zUrbi-logo.png" alt="zUrbi Logo" className="auth-logo" />
+              <h2>Entrar no zUrbi</h2>
+              <p>Acesse o sistema para reportar e acompanhar problemas urbanos</p>
+            </div>
+
+            <div className="auth-actions">
+              <Button
+                type="button"
+                variant="govbr"
+                onClick={handleGovBrLogin}
+                aria-label="Entrar com conta gov.br"
+              >
+                Entrar com gov.br
+              </Button>
+            </div>
+
+            <div className="auth-footer">
+              <p>Ainda não tem conta?</p>
+              <Link to="/cadastro" className="auth-link">
+                Cadastrar com CPF
+              </Link>
+              <p className="form-hint" style={{ marginTop: '1rem' }}>
+                O acesso via gov.br é simulado nesta versão de demonstração.
+              </p>
+            </div>
           </div>
         </div>
       </div>

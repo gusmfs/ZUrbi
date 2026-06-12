@@ -120,6 +120,13 @@ export default function Header() {
                 ) : (
                   <div className="auth-buttons">
                     <Link
+                      to="/cadastro"
+                      className="btn btn-outline btn-sm"
+                      onClick={closeMenu}
+                    >
+                      Cadastrar
+                    </Link>
+                    <Link
                       to="/login"
                       className="btn btn-outline btn-sm"
                       onClick={closeMenu}
