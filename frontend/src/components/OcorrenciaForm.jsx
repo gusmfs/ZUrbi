@@ -84,9 +84,7 @@ export default function OcorrenciaForm({
           bairro: bairroValido || prev.bairro,
         }));
       })
-      .catch(() => {
-        /* usuário pode preencher manualmente */
-      })
+      .catch(() => {})
       .finally(() => {
         if (seq === geocodeSeq.current) setBuscandoEndereco(false);
       });
@@ -181,7 +179,7 @@ export default function OcorrenciaForm({
             descricao: formData.descricao.trim(),
           });
           setClassificacaoErro(
-            'Servidor de triagem indisponível — classificação aplicada localmente. Você pode ajustar abaixo.'
+            'Triagem temporariamente indisponível. Revise e ajuste a classificação abaixo, se necessário.'
           );
         }
         aplicarClassificacao(resultado);

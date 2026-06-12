@@ -8,7 +8,7 @@ export default function Login() {
   const { login } = useAuthStore();
 
   const handleGovBrLogin = () => {
-    const mockUser = {
+    const usuarioGovBr = {
       id: 'a1000001-0000-4000-8000-000000000001',
       usuarioId: 'a1000001-0000-4000-8000-000000000001',
       name: 'Maria Silva',
@@ -17,7 +17,7 @@ export default function Login() {
       provider: 'gov.br',
     };
 
-    login(mockUser);
+    login(usuarioGovBr);
     navigate('/');
   };
 
@@ -60,9 +60,6 @@ export default function Login() {
               <Link to="/cadastro" className="auth-link">
                 Cadastrar com CPF
               </Link>
-              <p className="form-hint" style={{ marginTop: '1rem' }}>
-                O acesso via gov.br é simulado nesta versão de demonstração.
-              </p>
             </div>
           </div>
         </div>

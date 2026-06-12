@@ -15,7 +15,7 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true,
-        // Assistente Ollama pode levar vários minutos na 1ª resposta
+        // Respostas do assistente podem demorar na primeira requisição
         timeout: 130000,
         proxyTimeout: 130000,
       },

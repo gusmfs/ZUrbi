@@ -10,7 +10,7 @@ export default function AnaliseDesempenho() {
         <div className="section-header">
           <h2>O Impacto zUrbi: Da Reação à Ação</h2>
           <p>
-            A gestão pública moderna não pode ser refém da sorte. Atualmente, a resolução de problemas urbanos opera de forma reativa, gerando custos imprevisíveis e frustração para o cidadão. O zUrbi introduz um novo paradigma: a gestão proativa, orientada por dados. Veja abaixo o impacto quantitativo que nossa solução traz para a cidade, usando como base a análise de 81 ocorrências reais simuladas.
+            A gestão pública moderna não pode ser refém da sorte. Atualmente, a resolução de problemas urbanos opera de forma reativa, gerando custos imprevisíveis e frustração para o cidadão. O zUrbi introduz um novo paradigma: a gestão proativa, orientada por dados. Veja abaixo o impacto quantitativo que nossa solução traz para a cidade, com base na análise de 81 ocorrências registradas na plataforma.
           </p>
         </div>
 

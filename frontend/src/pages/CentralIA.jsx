@@ -152,7 +152,7 @@ export default function CentralIA() {
 
       setError(
 
-        'Não foi possível conectar à API. Verifique se o backend está em http://localhost:8080 e reinicie o frontend (npm run dev).'
+        'Não foi possível conectar ao servidor. Tente novamente em instantes.'
 
       );
 

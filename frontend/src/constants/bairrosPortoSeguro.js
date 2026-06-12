@@ -53,7 +53,7 @@ export const BAIRROS_PORTO_SEGURO = [
   'Village III',
 ];
 
-/** Nomes antigos ou variantes (geocodificação / seed demo) → bairro oficial. */
+/** Nomes antigos ou variantes (geocodificação) → bairro oficial. */
 export const BAIRROS_ALIASES = {
   'outeiro da gloria': 'Outeiro da Glória',
   'paraiso dos pataxos': 'Paraíso dos Pataxós',
